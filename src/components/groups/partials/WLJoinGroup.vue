@@ -7,7 +7,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, reactive } from "vue";
+import { computed, reactive, type Ref } from "vue";
 import { getISOFormattedCurrentDateTime } from "@/helpers/date";
 
 import type { WLUser } from "@/types/auth.types";
@@ -17,6 +17,8 @@ import { useGroupsStore } from "@/stores/groups";
 import { useAuthStore } from "@/stores/auth";
 
 import WLGenericForm from "../../WLGenericForm.vue";
+import { storeToRefs } from "pinia";
+import { WLGroupMembershipStatus } from "@/types/wishlist.types";
 
 // #region Join existing group form data and getter
 const joinGroupForm = reactive<WLForm>({
@@ -75,16 +77,19 @@ async function joinExistingGroup(
   // first check if group exists
   const groupExists = await getGroupById(id);
 
-  const { getLoggedUser }: { getLoggedUser: WLUser | false } = useAuthStore();
+  const { loggedUser }: { loggedUser: Ref<WLUser> } = storeToRefs(
+    useAuthStore()
+  );
 
   // if it does, try to add the user to it
-  if (groupExists && getLoggedUser && getLoggedUser.uid) {
-    const alreadyMember = await isUserInGroup(getLoggedUser.uid, id);
+  if (groupExists && loggedUser.value && loggedUser.value.uid) {
+    const alreadyMember = await isUserInGroup(loggedUser.value.uid, id);
 
     if (alreadyMember === false) {
       const dataSet: Object = {
-        userId: getLoggedUser.uid,
-        groupdId: id,
+        status: WLGroupMembershipStatus.REQUESTED,
+        userId: loggedUser.value.uid,
+        groupId: id,
         admin: false,
         joinedOn: getISOFormattedCurrentDateTime(),
       };

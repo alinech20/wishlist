@@ -7,10 +7,10 @@
 </template>
 
 <script setup lang="ts">
-import { computed, reactive } from "vue";
+import { computed, reactive, type Ref } from "vue";
 import { getISOFormattedCurrentDateTime } from "@/helpers/date";
 
-import type { WLGroup } from "@/types/wishlist.types";
+import { WLGroupMembershipStatus, type WLGroup } from "@/types/wishlist.types";
 import type { WLButton, WLField, WLForm } from "@/types/forms.types";
 import type { WLUser } from "@/types/auth.types";
 
@@ -18,6 +18,7 @@ import { useGroupsStore } from "@/stores/groups";
 import { useAuthStore } from "@/stores/auth";
 
 import WLGenericForm from "../../WLGenericForm.vue";
+import { storeToRefs } from "pinia";
 
 // #region Add or remove friend email fields
 /**
@@ -146,10 +147,12 @@ async function createNewGroup(
   const newGroup: WLGroup = { ...values };
   resetForm();
 
-  const { getLoggedUser }: { getLoggedUser: WLUser | false } = useAuthStore();
+  const { loggedUser }: { loggedUser: Ref<WLUser> } = storeToRefs(
+    useAuthStore()
+  );
 
-  if (getLoggedUser && getLoggedUser.uid) {
-    newGroup.createdBy = getLoggedUser.uid;
+  if (loggedUser.value && loggedUser.value.uid) {
+    newGroup.createdBy = loggedUser.value.uid;
   }
 
   newGroup.createdOn = getISOFormattedCurrentDateTime();
@@ -161,6 +164,7 @@ async function createNewGroup(
   // add user to group as admin if group was created
   if (groupId) {
     addUserToGroup({
+      status: WLGroupMembershipStatus.ACCEPTED,
       userId: newGroup.createdBy,
       groupId: groupId,
       admin: true,

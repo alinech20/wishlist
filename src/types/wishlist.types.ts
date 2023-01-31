@@ -21,3 +21,11 @@ export type WLUserGroup = {
   admin: boolean;
   group: WLGroup;
 };
+
+export enum WLGroupMembershipStatus {
+  DECLINED = "Declined",
+  REJECTED = "Rejected",
+  INVITED = "Invited",
+  REQUESTED = "Requested",
+  ACCEPTED = "Accepted",
+}

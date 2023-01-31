@@ -3,8 +3,6 @@ import { defineStore } from "pinia";
 import { ref, reactive } from "vue";
 
 export const useFormStore = defineStore("form", () => {
-  // TODO: call hide message in set message
-
   // #region Form submission status (getter and setter)
   const formProcessing = ref<boolean>(false);
 

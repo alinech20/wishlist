@@ -1,5 +1,5 @@
-import { defineStore } from "pinia";
-import { computed, reactive, ref } from "vue";
+import { defineStore, storeToRefs } from "pinia";
+import { computed, reactive, ref, type Ref } from "vue";
 
 import type { WLUser } from "@/types/auth.types";
 import type { WLUserGroup } from "@/types/wishlist.types";
@@ -7,8 +7,10 @@ import type { WLUserGroup } from "@/types/wishlist.types";
 import { useAuthStore } from "./auth";
 
 export const useUserStore = defineStore("user", () => {
-  const { getLoggedUser }: { getLoggedUser: WLUser | false } = useAuthStore();
-  const user = ref<WLUser | false>(getLoggedUser);
+  const { loggedUser }: { loggedUser: Ref<WLUser> } = storeToRefs(
+    useAuthStore()
+  );
+  const user = ref<WLUser>(loggedUser.value);
 
   const groups = reactive<Array<WLUserGroup>>([]);
 

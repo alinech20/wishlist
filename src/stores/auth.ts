@@ -15,7 +15,7 @@ import {
 } from "@firebase/auth";
 
 import { defineStore, storeToRefs } from "pinia";
-import { computed, reactive, type Ref } from "vue";
+import { reactive, type Ref } from "vue";
 
 export const useAuthStore = defineStore("auth", () => {
   // #region Form submission status and possible message
@@ -272,17 +272,13 @@ export const useAuthStore = defineStore("auth", () => {
   // #endregion
 
   // #region Set the logged user info on login
-  const loggedUser: WLUser = {
+  const loggedUser = reactive<WLUser>({
     uid: null,
     firstName: "",
     lastName: "",
     birthdate: "",
     email: "",
-  };
-
-  const getLoggedUser = computed<WLUser | false>((): WLUser | false =>
-    loggedUser.uid ? loggedUser : false
-  );
+  });
 
   /**
    * Sets the value for the logged user
@@ -319,6 +315,6 @@ export const useAuthStore = defineStore("auth", () => {
     handleSignOut,
     getUserById,
     setLoggedUser,
-    getLoggedUser,
+    loggedUser,
   };
 });

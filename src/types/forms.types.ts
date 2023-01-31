@@ -22,6 +22,11 @@ export type WLButton = {
   clickParams?: Array<any>;
 };
 
+export type WLDropdownOption = {
+  value: string;
+  displayName: string;
+};
+
 export type WLFormSubmissionMessage = {
   type: "success" | "pending" | "error" | undefined;
   message: string;

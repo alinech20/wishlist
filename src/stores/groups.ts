@@ -3,11 +3,16 @@ import { defineStore, storeToRefs } from "pinia";
 import { markRaw, reactive, ref, type Ref } from "vue";
 
 import {
+  AddToGroupIcon,
   CreateGroupIcon,
   JoinGroupIcon,
   ManageGroupsIcon,
 } from "@/components/ui/icons";
-import type { WLGroup, WLUserGroup } from "@/types/wishlist.types";
+import type {
+  WLGroup,
+  WLGroupMembershipStatus,
+  WLUserGroup,
+} from "@/types/wishlist.types";
 
 import { useFormStore } from "./form";
 import { useUserStore } from "./user";
@@ -26,6 +31,7 @@ import {
   type DocumentData,
 } from "@firebase/firestore";
 import { db } from "@/helpers/firebase";
+import type { QueryFieldFilterConstraint } from "firebase/firestore";
 
 export const useGroupsStore = defineStore("groups", () => {
   // #region Active view logic (groups subpage)
@@ -44,6 +50,11 @@ export const useGroupsStore = defineStore("groups", () => {
       icon: markRaw(JoinGroupIcon),
       name: "Join group",
       action: () => setActiveView("join"),
+    },
+    {
+      icon: markRaw(AddToGroupIcon),
+      name: "Invite",
+      action: () => setActiveView("invite"),
     },
     {
       icon: markRaw(ManageGroupsIcon),
@@ -100,6 +111,15 @@ export const useGroupsStore = defineStore("groups", () => {
     }
   };
 
+  /**
+   * Checks if a user is in a certain group
+   *
+   * @param { string } uid The user's id
+   * @param { string } gid The group's id
+   *
+   * Returns true or false depending if the user's in the group or not
+   * Can also return undefined in case it errors
+   */
   const isUserInGroup: Function = async (
     uid: string,
     gid: string
@@ -109,7 +129,7 @@ export const useGroupsStore = defineStore("groups", () => {
         query(
           collection(db, "users_groups"),
           where("userId", "==", uid),
-          where("groupdId", "==", gid)
+          where("groupId", "==", gid)
         )
       );
 
@@ -167,6 +187,11 @@ export const useGroupsStore = defineStore("groups", () => {
     }
   };
 
+  /**
+   * Adds a new group to the user store's state
+   *
+   * @param { any } data Has userId, groupId, joinedOn, admin properties
+   */
   const pushGroupToUserStore: Function = async (data: any): Promise<void> => {
     const { groupsInitialized }: { groupsInitialized: Ref<boolean> } =
       storeToRefs(useUserStore());
@@ -228,12 +253,22 @@ export const useGroupsStore = defineStore("groups", () => {
     }
   };
 
+  // TODO: fetch only accepted memberships
+
   const fetchUserGroups: Function = async (
-    uid: string
+    uid: string,
+    status: WLGroupMembershipStatus
   ): Promise<Array<WLUserGroup> | undefined> => {
     try {
+      const statusQuery: QueryFieldFilterConstraint | null = status
+        ? where("status", "==", status)
+        : null;
       const groupRelations: QuerySnapshot<DocumentData> = await getDocs(
-        query(collection(db, "users_groups"), where("userId", "==", uid))
+        query(
+          collection(db, "users_groups"),
+          where("userId", "==", uid),
+          statusQuery
+        )
       );
 
       const userGroups: Array<WLUserGroup> = [];
@@ -267,7 +302,7 @@ export const useGroupsStore = defineStore("groups", () => {
 
       return userGroups;
     } catch (e: any) {
-      console.error(e.code);
+      console.error(e);
     }
   };
   // #endregion

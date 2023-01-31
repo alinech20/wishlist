@@ -4,38 +4,19 @@
 
 <script setup lang="ts">
 import { onBeforeMount, type Ref } from "vue";
+import { storeToRefs } from "pinia";
 
 import WLGroupCardList from "../WLGroupCardList.vue";
 
-import type { WLUser } from "@/types/auth.types";
-import type { WLUserGroup } from "@/types/wishlist.types";
-
-import { useAuthStore } from "@/stores/auth";
-import { useGroupsStore } from "@/stores/groups";
+import { type WLUserGroup } from "@/types/wishlist.types";
 import { useUserStore } from "@/stores/user";
-import { storeToRefs } from "pinia";
+import { initializeStateGroups } from "@/helpers/groups";
 
-const {
-  groups,
-  groupsInitialized,
-}: { groups: Ref<Array<WLUserGroup>>; groupsInitialized: Ref<boolean> } =
-  storeToRefs(useUserStore());
+// TODO: split between accepted groups and invited/requested
 
-onBeforeMount(async () => {
-  const { getLoggedUser }: { getLoggedUser: WLUser | false } = useAuthStore();
-  const { fetchUserGroups }: { fetchUserGroups: Function } = useGroupsStore();
-  const {
-    setGroups,
-    setGroupsInitialized,
-  }: {
-    setGroups: Function;
-    setGroupsInitialized: Function;
-  } = useUserStore();
+const { groups }: { groups: Ref<Array<WLUserGroup>> } = storeToRefs(
+  useUserStore()
+);
 
-  if (getLoggedUser && getLoggedUser.uid && !groupsInitialized.value) {
-    const userGroups = await fetchUserGroups(getLoggedUser.uid);
-    setGroups(userGroups);
-    setGroupsInitialized(true);
-  }
-});
+onBeforeMount(async () => await initializeStateGroups());
 </script>

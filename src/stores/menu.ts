@@ -27,7 +27,6 @@ export const useMenuStore = defineStore("menu", () => {
       {
         name: "Dashboard",
         location: "/",
-        // TODO: why dis no work?!
         active: computed<boolean>(() => activeRoute.value === "Dashboard"),
         onClick: () => navigateTo("/", "Dashboard"),
       } as Tab,

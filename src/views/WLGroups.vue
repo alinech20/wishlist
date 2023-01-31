@@ -2,13 +2,12 @@
   <WLBaseLayout>
     <WLActionCardList
       :actionCards="groupsActions"
-      v-show="showActionCardList"
+      v-if="showActionCardList"
     ></WLActionCardList>
-    <WLCreateGroup v-show="showCreateGroupPartial"></WLCreateGroup>
-    <WLJoinGroup v-show="showJoinGroupPartial"></WLJoinGroup>
-
-    <!-- using v-if to delay the mount for the logic in onBeforeMount -->
-    <WLManageGroups v-if="showManageGroupsPartial"></WLManageGroups>
+    <WLCreateGroup v-else-if="showCreateGroupPartial"></WLCreateGroup>
+    <WLJoinGroup v-else-if="showJoinGroupPartial"></WLJoinGroup>
+    <WLInvite v-else-if="showInvitePartial"></WLInvite>
+    <WLManageGroups v-else-if="showManageGroupsPartial"></WLManageGroups>
   </WLBaseLayout>
 </template>
 
@@ -23,6 +22,7 @@ import WLBaseLayout from "@/layouts/WLBaseLayout.vue";
 import WLActionCardList from "@/components/WLActionCardList.vue";
 import WLCreateGroup from "@/components/groups/partials/WLCreateGroup.vue";
 import WLJoinGroup from "@/components/groups/partials/WLJoinGroup.vue";
+import WLInvite from "@/components/groups/partials/WLInvite.vue";
 import WLManageGroups from "@/components/groups/partials/WLManageGroups.vue";
 
 const {
@@ -37,6 +37,9 @@ const showCreateGroupPartial = computed<boolean>(
 );
 const showJoinGroupPartial = computed<boolean>(
   () => activeView.value === "join"
+);
+const showInvitePartial = computed<boolean>(
+  () => activeView.value === "invite"
 );
 const showManageGroupsPartial = computed<boolean>(
   () => activeView.value === "manage"
