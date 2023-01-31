@@ -1,5 +1,5 @@
 <template>
-  <article class="wl-action-card" @click="props.action">
+  <article class="wl-card wl-action-card" @click="props.action">
     <section class="action-card__icon">
       <component :is="props.icon"></component>
     </section>

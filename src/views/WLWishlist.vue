@@ -24,7 +24,7 @@ import type { Ref } from "vue";
 
 import WLBaseLayout from "@/layouts/WLBaseLayout.vue";
 import WLGenericForm from "@/components/WLGenericForm.vue";
-import WLItemList from "@/components/WLItemList.vue";
+// import WLItemList from "@/components/WLItemList.vue";
 import WLBaseButton from "@/components/ui/WLBaseButton.vue";
 
 import type { WLItem } from "@/types/wishlist.types";

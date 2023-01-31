@@ -1,0 +1,17 @@
+@use "../../_vars/borders";
+@use "../../_vars/colors";
+@use "../../_vars/shadows";
+@use "../../_vars/spacers";
+
+.wl-group-card {
+  background-color: colors.$Secondary;
+
+  section p {
+    margin: 0;
+  }
+
+  .group-card__details {
+    display: flex;
+    justify-content: space-around;
+  }
+}

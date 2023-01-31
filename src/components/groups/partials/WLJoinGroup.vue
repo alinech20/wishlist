@@ -8,7 +8,7 @@
 
 <script setup lang="ts">
 import { computed, reactive } from "vue";
-import { getISOFormattedCurrentDate } from "@/helpers/date";
+import { getISOFormattedCurrentDateTime } from "@/helpers/date";
 
 import type { WLUser } from "@/types/auth.types";
 import type { WLButton, WLField, WLForm } from "@/types/forms.types";
@@ -86,7 +86,7 @@ async function joinExistingGroup(
         userId: getLoggedUser.uid,
         groupdId: id,
         admin: false,
-        joinedOn: getISOFormattedCurrentDate(),
+        joinedOn: getISOFormattedCurrentDateTime(),
       };
       success = addUserToGroup(dataSet);
 

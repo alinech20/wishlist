@@ -8,7 +8,7 @@
 
 <script setup lang="ts">
 import { computed, reactive } from "vue";
-import { getISOFormattedCurrentDate } from "@/helpers/date";
+import { getISOFormattedCurrentDateTime } from "@/helpers/date";
 
 import type { WLGroup } from "@/types/wishlist.types";
 import type { WLButton, WLField, WLForm } from "@/types/forms.types";
@@ -152,7 +152,7 @@ async function createNewGroup(
     newGroup.createdBy = getLoggedUser.uid;
   }
 
-  newGroup.createdOn = getISOFormattedCurrentDate();
+  newGroup.createdOn = getISOFormattedCurrentDateTime();
   newGroup.modifiedOn = newGroup.createdOn;
 
   // try to create the group
