@@ -1,0 +1,8 @@
+@use "../_mixins/alignment";
+
+#AuthForm {
+  width: 60%;
+  text-align: center;
+
+  @include alignment.absolute-centerer(true, true);
+}

@@ -1,0 +1,14 @@
+@use "../_mixins/alignment";
+@use "../_vars/sizes";
+
+.auth-section {
+  @include alignment.absolute-centerer(true, true);
+
+  .wl-form {
+    .wl-form__buttons {
+      .wl-button-wrapper {
+        width: sizes.$MobileButtonAuthWidth;
+      }
+    }
+  }
+}

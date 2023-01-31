@@ -1,0 +1,26 @@
+@use "../../_base/inputs";
+@use "../../_vars/borders";
+@use "../../_vars/colors";
+@use "../../_vars/spacers";
+
+.wl-input-wrapper {
+  .wl-input {
+    &:focus {
+      outline: borders.$InputBorderFocus;
+    }
+  }
+
+  .wl-input-validation-errors-wrapper {
+    margin-top: spacers.$TinySpacer;
+    padding: spacers.$TinySpacer;
+    text-align: left;
+    border: borders.$ErrorBorderStandard;
+    border-radius: borders.$BorderRadiusStandard;
+    background-color: colors.$ErrorMessageBackground;
+
+    .wl-input-validation-error {
+      color: colors.$ErrorMessage;
+      font-weight: 700;
+    }
+  }
+}

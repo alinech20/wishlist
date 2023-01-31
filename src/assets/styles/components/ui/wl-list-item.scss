@@ -1,0 +1,28 @@
+@use "../../_mixins/alignment";
+@use "../../_vars/borders";
+@use "../../_vars/colors";
+@use "../../_vars/spacers";
+
+.wl-item {
+  background-color: colors.$Secondary;
+  border-radius: borders.$BorderRadiusStandard;
+  margin: spacers.$TinySpacer 0;
+  padding: spacers.$SmallerSpacer;
+
+  &__title-wrapper {
+    text-align: center;
+
+    .wl-item-title__title {
+      margin: 0;
+    }
+  }
+
+  &__title-divider {
+    border: none;
+    border-bottom: borders.$ListItemTitleBorder;
+  }
+
+  &__controls {
+    @include alignment.flex(row);
+  }
+}

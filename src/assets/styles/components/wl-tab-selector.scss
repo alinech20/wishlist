@@ -1,0 +1,29 @@
+@use "../_mixins/alignment";
+@use "../_vars/colors";
+@use "../_vars/shadows";
+@use "../_vars/sizes";
+@use "../_vars/spacers";
+
+.wl-tabs {
+  @include alignment.flex(row);
+
+  .wl-button-wrapper {
+    width: unset;
+    margin: unset;
+    flex-grow: 1;
+
+    .wl-tab {
+      background-color: colors.$PrimaryDark;
+      color: colors.$Background;
+      border-radius: 0;
+      padding: spacers.$SmallerSpacer 0;
+    }
+
+    &.active {
+      .wl-tab {
+        background-color: colors.$Primary;
+        color: colors.$Background;
+      }
+    }
+  }
+}

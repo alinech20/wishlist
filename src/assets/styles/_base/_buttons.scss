@@ -1,0 +1,39 @@
+@use "../_vars/borders";
+@use "../_vars/colors";
+@use "../_vars/sizes";
+@use "../_vars/spacers";
+
+.wl-button-wrapper {
+  width: sizes.$MobileButtonWidth;
+  margin: spacers.$TinySpacer auto;
+
+  .wl-button {
+    background-color: colors.$Background;
+    border: none;
+    border-radius: borders.$BorderRadiusStandard;
+    padding: spacers.$TinySpacer spacers.$SmallSpacer;
+    width: 100%;
+    font-size: 1rem;
+    cursor: pointer;
+
+    &--primary {
+      background-color: colors.$Primary;
+      color: colors.$Background;
+    }
+
+    &--primary-dark {
+      background-color: colors.$PrimaryDark;
+      color: colors.$Background;
+    }
+
+    &--secondary {
+      background-color: colors.$Secondary;
+      color: colors.$Background;
+    }
+
+    &--secondary-dark {
+      background-color: colors.$SecondaryDark;
+      color: colors.$Background;
+    }
+  }
+}

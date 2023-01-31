@@ -1,0 +1,18 @@
+@use "../_vars/colors";
+@use "../_vars/shadows";
+@use "../_vars/sizes";
+@use "../_vars/spacers";
+
+.base-layout-wrapper {
+  .header {
+    background-color: colors.$PrimaryDark;
+    box-shadow: shadows.$MobileNavbarShadow;
+    color: colors.$Background;
+    height: sizes.$HeaderHeightMobile;
+  }
+
+  .main-section {
+    padding: spacers.$SmallSpacer spacers.$MediumSpacer;
+    text-align: center;
+  }
+}

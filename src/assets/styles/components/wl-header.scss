@@ -1,0 +1,51 @@
+@use "../_mixins/alignment";
+@use "../_vars/colors";
+@use "../_vars/sizes";
+@use "../_vars/spacers";
+
+.header-content-wrapper {
+  height: 100%;
+
+  .header-section {
+    @include alignment.flex(row);
+    @include alignment.flex-centerer(false, true);
+
+    height: 100%;
+    padding: 0 spacers.$SmallerSpacer;
+    justify-content: space-between;
+
+    .header {
+      &__menu-wrapper,
+      &__auth-wrapper {
+        width: sizes.$HeaderHeightMobile;
+        height: sizes.$HeaderHeightMobile;
+
+        svg {
+          height: 100%;
+          width: 100%;
+          transform: scale(0.7);
+        }
+      }
+
+      &__menu-wrapper {
+        svg {
+          stroke: colors.$Background;
+          stroke-linejoin: round;
+          stroke-width: 3;
+        }
+      }
+
+      &__auth-wrapper {
+        svg {
+          fill: colors.$Background;
+        }
+      }
+
+      &__title-wrapper {
+        .title-wrapper__title-text {
+          margin-top: 0;
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,15 @@
+@use "../_vars/borders";
+@use "../_vars/spacers";
+
+.wl-input {
+  border: borders.$InputBorderStandard;
+  border-radius: borders.$BorderRadiusStandard;
+  padding: spacers.$TinySpacer spacers.$SmallerSpacer;
+  font-size: 1rem;
+  width: 100%;
+  box-sizing: border-box;
+
+  &--textarea {
+    resize: none;
+  }
+}

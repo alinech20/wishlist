@@ -1,0 +1,28 @@
+@use "../../_vars/borders";
+@use "../../_vars/colors";
+@use "../../_vars/shadows";
+@use "../../_vars/spacers";
+
+.wl-action-card {
+  background-color: colors.$Secondary;
+  border-radius: borders.$BorderRadiusStandard;
+  box-shadow: shadows.$FormMessageShadow;
+  margin: spacers.$SmallerSpacer;
+  padding: spacers.$SmallerSpacer 0;
+  width: 40%;
+
+  .action-card__icon {
+    width: 50%;
+    margin: 0 auto;
+
+    svg {
+      width: 100%;
+    }
+  }
+
+  .action-card__name {
+    p {
+      margin: 0;
+    }
+  }
+}

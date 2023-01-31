@@ -1,0 +1,80 @@
+@use "./quotes";
+@use "../_vars/colors";
+@use "../_vars/text";
+
+* {
+  font-family: text.$FontFamily;
+  // font-weight: 400;
+}
+
+body {
+  font-size: text.$FontSizeBase;
+  color: text.$FontColor;
+}
+
+.heading {
+  font-weight: 700;
+  margin: 0;
+
+  &--xxl {
+    font-size: 3rem;
+  }
+
+  &--xl {
+    font-size: 2.5rem;
+  }
+
+  &--l {
+    font-size: 2rem;
+  }
+
+  &--m {
+    font-size: 1.75rem;
+  }
+
+  &--s {
+    font-size: 1.5rem;
+  }
+
+  &--xs {
+    font-size: 1.25rem;
+  }
+}
+
+.paragraph {
+  &--xxl {
+    font-size: 2rem;
+  }
+
+  &--xl {
+    font-size: 1.5rem;
+  }
+
+  &--l {
+    font-size: 1.25rem;
+  }
+
+  &--m {
+    font-size: 1.125rem;
+  }
+
+  &--s {
+    font-size: 1rem;
+  }
+
+  &--xs {
+    font-size: 0.825rem;
+  }
+
+  &--xxs {
+    font-size: 0.75rem;
+  }
+}
+
+.wl-link {
+  color: colors.$PrimaryDark;
+
+  &--light {
+    color: colors.$Background;
+  }
+}

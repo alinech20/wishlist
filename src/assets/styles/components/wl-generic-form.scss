@@ -1,0 +1,38 @@
+@use "../_mixins/alignment";
+@use "../_vars/borders";
+@use "../_vars/colors";
+@use "../_vars/shadows";
+@use "../_vars/spacers";
+
+.wl-form {
+  &__message {
+    .form-message {
+      border-radius: borders.$BorderRadiusStandard;
+      color: colors.$Background;
+      padding: spacers.$TinySpacer spacers.$SmallerSpacer;
+      box-shadow: shadows.$FormMessageShadow;
+
+      &--success {
+        background-color: colors.$SuccessMessage;
+      }
+
+      &--pending {
+        background-color: colors.$PendingMessage;
+      }
+
+      &--error {
+        background-color: colors.$ErrorMessage;
+      }
+    }
+  }
+
+  &--fields-flex-column {
+    .wl-form__fields {
+      @include alignment.flex(column);
+
+      .wl-input-wrapper {
+        margin: spacers.$TinySpacer 0;
+      }
+    }
+  }
+}

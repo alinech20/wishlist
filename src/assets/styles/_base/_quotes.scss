@@ -1,0 +1,11 @@
+@use "../_vars/borders";
+@use "../_vars/colors";
+@use "../_vars/spacers";
+
+.quote {
+  background-color: colors.$Primary;
+  border-left: borders.$QuoteBorderStandard;
+  color: colors.$Background;
+  margin: 0;
+  padding: spacers.$SmallerSpacer spacers.$SmallSpacer;
+}
