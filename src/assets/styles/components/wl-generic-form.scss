@@ -30,7 +30,8 @@
     .wl-form__fields {
       @include alignment.flex(column);
 
-      .wl-input-wrapper {
+      .wl-input-wrapper,
+      .wl-select-wrapper {
         margin: spacers.$TinySpacer 0;
       }
     }

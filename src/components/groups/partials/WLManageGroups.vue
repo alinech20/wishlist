@@ -8,7 +8,7 @@ import { storeToRefs } from "pinia";
 
 import WLGroupCardList from "../WLGroupCardList.vue";
 
-import { type WLUserGroup } from "@/types/wishlist.types";
+import type { WLUserGroup } from "@/types/wishlist.types";
 import { useUserStore } from "@/stores/user";
 import { initializeStateGroups } from "@/helpers/groups";
 

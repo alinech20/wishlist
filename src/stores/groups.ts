@@ -8,10 +8,10 @@ import {
   JoinGroupIcon,
   ManageGroupsIcon,
 } from "@/components/ui/icons";
-import type {
-  WLGroup,
+import {
+  type WLGroup,
   WLGroupMembershipStatus,
-  WLUserGroup,
+  type WLUserGroup,
 } from "@/types/wishlist.types";
 
 import { useFormStore } from "./form";
@@ -32,6 +32,7 @@ import {
 } from "@firebase/firestore";
 import { db } from "@/helpers/firebase";
 import type { QueryFieldFilterConstraint } from "firebase/firestore";
+import { getNicelyFormattedCurrentDateTime } from "@/helpers/date";
 
 export const useGroupsStore = defineStore("groups", () => {
   // #region Active view logic (groups subpage)
@@ -94,7 +95,7 @@ export const useGroupsStore = defineStore("groups", () => {
       const groupSnap: DocumentSnapshot<DocumentData> = await getDoc(groupRef);
 
       if (groupSnap.exists()) {
-        hideFormMessage(8000);
+        hideFormMessage();
         return groupSnap.data();
       } else
         throw {
@@ -103,10 +104,10 @@ export const useGroupsStore = defineStore("groups", () => {
     } catch (e: any) {
       setFormProcessingMessage({
         type: "error",
-        message: e.code,
+        message: e,
       });
 
-      hideFormMessage(8000);
+      hideFormMessage();
       return undefined;
     }
   };
@@ -136,20 +137,20 @@ export const useGroupsStore = defineStore("groups", () => {
       if (result.size === 1) {
         setFormProcessingMessage({
           type: "error",
-          message: "You are already part of the group",
+          message: "Already in the group",
         });
 
-        hideFormMessage(8000);
+        hideFormMessage();
 
         return true;
       } else return false;
     } catch (e: any) {
       setFormProcessingMessage({
         type: "error",
-        message: e.code,
+        message: e,
       });
 
-      hideFormMessage(8000);
+      hideFormMessage();
     }
   };
 
@@ -174,15 +175,15 @@ export const useGroupsStore = defineStore("groups", () => {
         message: "Group successfully created!",
       });
 
-      hideFormMessage(8000);
+      hideFormMessage();
       return newGroup.id;
     } catch (e: any) {
       setFormProcessingMessage({
         type: "error",
-        message: e.code,
+        message: e,
       });
 
-      hideFormMessage(8000);
+      hideFormMessage();
       return null;
     }
   };
@@ -239,36 +240,33 @@ export const useGroupsStore = defineStore("groups", () => {
         message: "Successfully joined the group!",
       });
 
-      hideFormMessage(8000);
+      hideFormMessage();
 
       return true;
     } catch (e: any) {
       setFormProcessingMessage({
         type: "error",
-        message: e.code,
+        message: e,
       });
 
-      hideFormMessage(8000);
+      hideFormMessage();
       return false;
     }
   };
-
-  // TODO: fetch only accepted memberships
 
   const fetchUserGroups: Function = async (
     uid: string,
     status: WLGroupMembershipStatus
   ): Promise<Array<WLUserGroup> | undefined> => {
     try {
-      const statusQuery: QueryFieldFilterConstraint | null = status
-        ? where("status", "==", status)
-        : null;
+      const whereClauses: Array<QueryFieldFilterConstraint> = [
+        where("userId", "==", uid),
+      ];
+
+      if (status) whereClauses.push(where("status", "==", status));
+
       const groupRelations: QuerySnapshot<DocumentData> = await getDocs(
-        query(
-          collection(db, "users_groups"),
-          where("userId", "==", uid),
-          statusQuery
-        )
+        query(collection(db, "users_groups"), ...whereClauses)
       );
 
       const userGroups: Array<WLUserGroup> = [];
@@ -305,6 +303,39 @@ export const useGroupsStore = defineStore("groups", () => {
       console.error(e);
     }
   };
+
+  const inviteToGroup: Function = async (
+    uid: string,
+    gid: string
+  ): Promise<void> => {
+    try {
+      showFormMessage("Inviting user(s)...");
+      const { getUserData } = storeToRefs(useUserStore());
+
+      const data = {
+        requester: getUserData.value.user.uid,
+        status: WLGroupMembershipStatus.INVITED,
+        userId: uid,
+        groupId: gid,
+        admin: false,
+        joinedOn: getNicelyFormattedCurrentDateTime(),
+      };
+
+      await addDoc(collection(db, "users_groups"), data);
+
+      setFormProcessingMessage({
+        type: "success",
+        message: "Invitation sent!",
+      });
+    } catch (e: any) {
+      setFormProcessingMessage({
+        type: "error",
+        message: e,
+      });
+
+      hideFormMessage();
+    }
+  };
   // #endregion
 
   return {
@@ -315,5 +346,6 @@ export const useGroupsStore = defineStore("groups", () => {
     createGroup,
     addUserToGroup,
     fetchUserGroups,
+    inviteToGroup,
   };
 });

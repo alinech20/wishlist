@@ -28,10 +28,10 @@ const addFriendInput: Function = () => {
   let existingFriendInputs = 0;
 
   return function () {
-    const friendField: WLField = {
+    const friendField = {
       key: `add-friend-${++existingFriendInputs}`,
       type: "email",
-      name: `add-friend`,
+      name: `add-friend-${existingFriendInputs}`,
       required: true,
       placeholder: "Friend's email...",
     };
@@ -43,7 +43,11 @@ const addFriendInput: Function = () => {
 /**
  * Removes a friend email field
  */
-const removeFriendInput: Function = () => createGroupForm.fields.pop();
+const removeFriendInput: Function = () => {
+  const noOfFields = createGroupForm.fields.length;
+  if (createGroupForm.fields[noOfFields - 1].name.includes("add-friend"))
+    createGroupForm.fields.pop();
+};
 // #endregion
 
 // #region Create group form data and getter

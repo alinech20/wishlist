@@ -1,3 +1,10 @@
+import type { ComputedRef } from "vue";
+
+export type WLDropdownOption = {
+  optionValue: string;
+  displayName: string;
+};
+
 export type WLField = {
   key: string;
   labelText?: string;
@@ -8,6 +15,8 @@ export type WLField = {
   autocomplete?: string;
   hidden?: string;
   value?: string;
+  fieldElement?: string;
+  options?: Array<WLDropdownOption> | ComputedRef<Array<WLDropdownOption>>;
 };
 
 export type WLButton = {
@@ -20,11 +29,6 @@ export type WLButton = {
   xClasses?: string;
   buttonClick?: Function;
   clickParams?: Array<any>;
-};
-
-export type WLDropdownOption = {
-  value: string;
-  displayName: string;
 };
 
 export type WLFormSubmissionMessage = {

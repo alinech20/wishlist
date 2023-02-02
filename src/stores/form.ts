@@ -43,6 +43,7 @@ export const useFormStore = defineStore("form", () => {
   const setFormProcessingMessage: Function = (
     msg: WLFormSubmissionMessage
   ): WLFormSubmissionMessage => {
+    if (!showFormProcessingMessage.value) setShowFormProcessingMessage(true);
     formProcessingMessage.type = msg.type;
     formProcessingMessage.message = msg.message;
     return formProcessingMessage;

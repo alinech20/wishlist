@@ -16,6 +16,13 @@ import {
 
 import { defineStore, storeToRefs } from "pinia";
 import { reactive, type Ref } from "vue";
+import {
+  type QuerySnapshot,
+  getDocs,
+  query,
+  collection,
+  where,
+} from "firebase/firestore";
 
 export const useAuthStore = defineStore("auth", () => {
   // #region Form submission status and possible message
@@ -222,7 +229,7 @@ export const useAuthStore = defineStore("auth", () => {
         message: msg,
       });
     } finally {
-      hideFormMessage(8000);
+      hideFormMessage();
     }
   };
 
@@ -262,7 +269,7 @@ export const useAuthStore = defineStore("auth", () => {
         message: msg,
       });
     } finally {
-      hideFormMessage(8000);
+      hideFormMessage();
     }
   };
 
@@ -293,7 +300,9 @@ export const useAuthStore = defineStore("auth", () => {
     loggedUser.birthdate = user.birthdate;
     loggedUser.email = user.email;
   };
+  // #endregion
 
+  // #region Some fetch methods for users
   /**
    * Fetches a user from the db based on their id
    *
@@ -305,6 +314,37 @@ export const useAuthStore = defineStore("auth", () => {
     const user = await getDoc(doc(db, "users", uid));
     return user.data();
   };
+
+  const getUserByEmail: Function = async (
+    email: string
+  ): Promise<DocumentData | undefined> => {
+    try {
+      const user: QuerySnapshot<DocumentData> = await getDocs(
+        query(collection(db, "users"), where("email", "==", email))
+      );
+
+      if (user.size === 1)
+        return {
+          userId: user.docs[0].id,
+          ...user.docs[0].data(),
+        };
+      else {
+        setFormProcessingMessage({
+          type: "error",
+          message: "User does not exist",
+        });
+
+        hideFormMessage();
+      }
+    } catch (e: any) {
+      setFormProcessingMessage({
+        type: "error",
+        message: e.message,
+      });
+
+      hideFormMessage();
+    }
+  };
   // #endregion
 
   return {
@@ -314,6 +354,7 @@ export const useAuthStore = defineStore("auth", () => {
     handleEmailLogin,
     handleSignOut,
     getUserById,
+    getUserByEmail,
     setLoggedUser,
     loggedUser,
   };

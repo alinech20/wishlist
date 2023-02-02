@@ -25,8 +25,13 @@
     <section class="wl-form__fields">
       <slot name="fields">
         <!-- fallback content here -->
+        <WLDropdown
+          v-for="field in getDropdownFields"
+          v-bind="field"
+          :key="field.key"
+        ></WLDropdown>
         <WLGenericInput
-          v-for="(field, i) in props.fields"
+          v-for="(field, i) in getInputFields"
           v-bind="field"
           @update:value="(val: string) => $emit('update-input', i, val)"
           :key="field.key"
@@ -56,10 +61,11 @@ import { useFormStore } from "@/stores/form";
 import { customComponentsValidation } from "@/helpers/validators";
 
 import WLGenericInput from "@/components/WLGenericInput.vue";
+import WLDropdown from "./ui/WLDropdown.vue";
 import WLBaseButton from "@/components/ui/WLBaseButton.vue";
 
 import { storeToRefs } from "pinia";
-import type { Ref } from "vue";
+import { computed, type Ref } from "vue";
 
 const props = defineProps({
   id: {
@@ -94,6 +100,14 @@ const props = defineProps({
     },
   },
 });
+
+const getInputFields = computed<Array<WLField>>(() =>
+  props.fields.filter((f) => !f.fieldElement || f.fieldElement !== "select")
+);
+
+const getDropdownFields = computed<Array<WLField>>(() =>
+  props.fields.filter((f) => f.fieldElement === "select")
+);
 
 const {
   showFormProcessingMessage,

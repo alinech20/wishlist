@@ -1,7 +1,8 @@
 @use "../_vars/borders";
 @use "../_vars/spacers";
 
-.wl-input {
+.wl-input,
+.wl-select {
   border: borders.$InputBorderStandard;
   border-radius: borders.$BorderRadiusStandard;
   padding: spacers.$TinySpacer spacers.$SmallerSpacer;
