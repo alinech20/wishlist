@@ -1,0 +1,19 @@
+@use "../../../_vars/spacers";
+
+.wl-manage-groups {
+  &__section {
+    margin: spacers.$MediumSpacer 0;
+
+    &:first-of-type {
+      margin-top: 0;
+    }
+
+    &-title {
+      margin: spacers.$SmallSpacer 0;
+
+      &:first-of-type {
+        margin-top: 0;
+      }
+    }
+  }
+}

@@ -23,11 +23,15 @@
 </template>
 
 <script setup lang="ts">
-import type { WLUserGroup } from "@/types/wishlist.types";
+import type {
+  WLGroupMembershipStatus,
+  WLUserGroup,
+} from "@/types/wishlist.types";
 
 const props: WLUserGroup = defineProps<{
   joinedOn: string;
   admin: boolean;
+  status: WLGroupMembershipStatus;
   group: {
     id?: string;
     name: string;

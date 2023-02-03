@@ -204,6 +204,7 @@ export const useGroupsStore = defineStore("groups", () => {
       if (group) {
         const groupToPush: WLUserGroup = {
           joinedOn: data.joinedOn,
+          status: data.status,
           admin: data.admin,
           group: {
             id: data.groupId,
@@ -254,9 +255,17 @@ export const useGroupsStore = defineStore("groups", () => {
     }
   };
 
+  /**
+   * Gets the groups the user's a member of
+   *
+   * @param { string } uid User id
+   * @param { string } status Membership status (used to filter the groups)
+   *
+   * @returns { Promise<Array<WLUserGroup>> } Array of groups
+   */
   const fetchUserGroups: Function = async (
     uid: string,
-    status: WLGroupMembershipStatus
+    status?: WLGroupMembershipStatus
   ): Promise<Array<WLUserGroup> | undefined> => {
     try {
       const whereClauses: Array<QueryFieldFilterConstraint> = [
@@ -282,6 +291,7 @@ export const useGroupsStore = defineStore("groups", () => {
 
           const userGroup: WLUserGroup = {
             joinedOn: docData.joinedOn,
+            status: docData.status,
             admin: docData.admin,
             group: {
               id: docData.groupId,
@@ -304,6 +314,12 @@ export const useGroupsStore = defineStore("groups", () => {
     }
   };
 
+  /**
+   * Invites a user to join a group
+   *
+   * @param { string } uid User id
+   * @param { string } gid Group id
+   */
   const inviteToGroup: Function = async (
     uid: string,
     gid: string

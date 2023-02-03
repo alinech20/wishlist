@@ -16,12 +16,6 @@ export type WLGroup = {
   modifiedOn?: string;
 };
 
-export type WLUserGroup = {
-  joinedOn: string;
-  admin: boolean;
-  group: WLGroup;
-};
-
 export enum WLGroupMembershipStatus {
   DECLINED = "Declined",
   REJECTED = "Rejected",
@@ -29,3 +23,10 @@ export enum WLGroupMembershipStatus {
   REQUESTED = "Requested",
   ACCEPTED = "Accepted",
 }
+
+export type WLUserGroup = {
+  joinedOn: string;
+  admin: boolean;
+  status: WLGroupMembershipStatus;
+  group: WLGroup;
+};

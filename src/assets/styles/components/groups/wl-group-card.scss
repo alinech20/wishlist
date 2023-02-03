@@ -1,10 +1,9 @@
-@use "../../_vars/borders";
 @use "../../_vars/colors";
-@use "../../_vars/shadows";
 @use "../../_vars/spacers";
 
 .wl-group-card {
   background-color: colors.$Secondary;
+  margin: spacers.$SmallerSpacer 0;
 
   section p {
     margin: 0;

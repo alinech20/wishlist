@@ -7,8 +7,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onBeforeMount, reactive, type Ref } from "vue";
-import { storeToRefs } from "pinia";
+import { computed, onBeforeMount, reactive, ref } from "vue";
 
 import WLGenericForm from "@/components/WLGenericForm.vue";
 
@@ -23,20 +22,22 @@ import type {
   WLForm,
 } from "@/types/forms.types";
 
-import { useUserStore } from "@/stores/user";
 import { useGroupsStore } from "@/stores/groups";
 import { useAuthStore } from "@/stores/auth";
 
 import { initializeStateGroups } from "@/helpers/groups";
 
-const { groups }: { groups: Ref<Array<WLUserGroup>> } = storeToRefs(
-  useUserStore()
-);
+// #region Groups the user's a part of
+// accepted groups
+const acceptedGroups = ref<Array<WLUserGroup>>([]);
 
+/**
+ * Get groups where user is admin
+ */
 const groupsFilteredByAdminRights = computed<Array<WLDropdownOption>>(() => {
   const filtered: Array<WLDropdownOption> = [];
 
-  for (const group of groups.value) {
+  for (const group of acceptedGroups.value) {
     if (group.admin)
       filtered.push({
         optionValue: group.group.id as string,
@@ -46,7 +47,9 @@ const groupsFilteredByAdminRights = computed<Array<WLDropdownOption>>(() => {
 
   return filtered;
 });
+// #endregion
 
+// #region Form to invite someone to a group
 const inviteForm = reactive<WLForm>({
   id: "InviteToGroup",
   title: "Invite friends",
@@ -88,17 +91,28 @@ const inviteForm = reactive<WLForm>({
     } as WLButton,
   ] as Array<WLButton>,
 });
+// #endregion
 
 onBeforeMount(
-  async () => await initializeStateGroups(WLGroupMembershipStatus.ACCEPTED)
+  async () =>
+    (acceptedGroups.value = await initializeStateGroups(
+      WLGroupMembershipStatus.ACCEPTED
+    ))
 );
 
+// #region Invite someone to a group logic
+/**
+ * Sends an invite to a person after checking if
+ * the user exists and if it's already member of that group
+ *
+ * @param values Form values (group id and user email)
+ * @param { Function } resetForm Function to reset the form
+ */
 async function inviteFriend(
   values: { group: string; friend: string },
   { resetForm }: { resetForm: Function }
 ): Promise<void> {
   const newEntry = { ...values };
-  resetForm();
 
   const { getUserByEmail }: { getUserByEmail: Function } = useAuthStore();
   const user = await getUserByEmail(newEntry.friend);
@@ -110,7 +124,11 @@ async function inviteFriend(
     }: { isUserInGroup: Function; inviteToGroup: Function } = useGroupsStore();
 
     const alreadyMember = await isUserInGroup(user.userId, newEntry.group);
-    if (!alreadyMember) await inviteToGroup(user.userId, newEntry.group);
+    if (!alreadyMember) {
+      resetForm();
+      await inviteToGroup(user.userId, newEntry.group);
+    }
   }
 }
+// #endregion
 </script>
