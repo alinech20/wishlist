@@ -35,5 +35,14 @@
       background-color: colors.$SecondaryDark;
       color: colors.$Background;
     }
+
+    &--round {
+      border-radius: 50%;
+    }
+
+    &--xs {
+      width: 35px;
+      height: 35px;
+    }
   }
 }

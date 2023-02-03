@@ -27,6 +27,7 @@ import {
   getDocs,
   query,
   QuerySnapshot,
+  updateDoc,
   where,
   type DocumentData,
 } from "@firebase/firestore";
@@ -352,6 +353,78 @@ export const useGroupsStore = defineStore("groups", () => {
       hideFormMessage();
     }
   };
+
+  /**
+   * Fetches a reference from the users_groups collection based on uid and gid
+   *
+   * @param { string } uid User's id
+   * @param { string } gid Group's id
+   *
+   * @returns { DocumentReference } Matching document
+   */
+  const fetchUserGroupRelation: Function = async (
+    uid: string,
+    gid: string
+  ): Promise<DocumentReference | undefined> => {
+    try {
+      const whereClauses: Array<QueryFieldFilterConstraint> = [
+        where("userId", "==", uid),
+        where("groupId", "==", gid),
+      ];
+
+      const ugRelation: QuerySnapshot<DocumentData> = await getDocs(
+        query(collection(db, "users_groups"), ...whereClauses)
+      );
+
+      if (ugRelation.size === 1) return ugRelation.docs[0].ref;
+    } catch (e: any) {
+      console.error(e);
+    }
+  };
+
+  /**
+   * Updates relation with a group in the local state
+   *
+   * @param { string } gid Group's id
+   * @param { WLGroupMembershipStatus } status New status
+   */
+  const updateStateGroupStatus: Function = (
+    gid: string,
+    status: WLGroupMembershipStatus
+  ) => {
+    const { updateGroupStatus }: { updateGroupStatus: Function } =
+      useUserStore();
+
+    updateGroupStatus(gid, status);
+  };
+
+  /**
+   * Updates a user's relation status with a group
+   *
+   * @param { WLGroupMembershipStatus } status The new status
+   * @param { string } uid User's id
+   * @param { string } gid Group's id
+   *
+   * @returns void
+   */
+  const updateUserGroupRelation: Function = async (
+    status: WLGroupMembershipStatus,
+    uid: string,
+    gid: string
+  ): Promise<void> => {
+    try {
+      const docToUpdate = await fetchUserGroupRelation(uid, gid);
+      if (docToUpdate) {
+        updateStateGroupStatus(gid, status);
+
+        return await updateDoc(docToUpdate, {
+          status: status,
+        });
+      }
+    } catch (e: any) {
+      console.error(e);
+    }
+  };
   // #endregion
 
   return {
@@ -363,5 +436,6 @@ export const useGroupsStore = defineStore("groups", () => {
     addUserToGroup,
     fetchUserGroups,
     inviteToGroup,
+    updateUserGroupRelation,
   };
 });

@@ -1,4 +1,4 @@
-import type { ComputedRef } from "vue";
+import type { Component, ComputedRef } from "vue";
 
 export type WLDropdownOption = {
   optionValue: string;
@@ -25,7 +25,7 @@ export type WLButton = {
   type?: "button" | "reset" | "submit" | undefined;
   text: string;
   form?: string;
-  icon?: string;
+  icon?: Component;
   xClasses?: string;
   buttonClick?: Function;
   clickParams?: Array<any>;
