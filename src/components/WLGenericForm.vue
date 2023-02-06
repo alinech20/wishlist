@@ -8,6 +8,9 @@
     <section class="wl-form__title">
       <slot name="title">
         <h3 class="heading heading--l form-title">{{ props.title }}</h3>
+        <p v-if="props.additionalInfo" class="paragraph paragraph--s form-info">
+          Note: {{ props.additionalInfo }}
+        </p>
       </slot>
     </section>
     <section
@@ -76,6 +79,11 @@ const props = defineProps({
   title: {
     type: String,
     required: true,
+  },
+  additionalInfo: {
+    type: String,
+    required: false,
+    default: "",
   },
   validationSchema: {
     type: Object,

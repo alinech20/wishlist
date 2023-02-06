@@ -52,7 +52,9 @@ const groupsFilteredByAdminRights = computed<Array<WLDropdownOption>>(() => {
 const inviteForm = reactive<WLForm>({
   id: "InviteToGroup",
   title: "Invite friends",
-  validationSchema: {},
+  validationSchema: {
+    "add-friend": "required|email|min:5|max:60",
+  },
   fields: [
     {
       key: "group",

@@ -1,8 +1,17 @@
 import { ref, computed, reactive } from "vue";
 import { defineStore } from "pinia";
 
-import type { WLItem } from "@/types/wishlist.types";
+import type { WLItem, WLWishlist } from "@/features/wishlist/types";
 import type { WLForm, WLField, WLButton } from "@/types/forms.types";
+
+import {
+  addDoc,
+  collection,
+  type DocumentData,
+  type DocumentReference,
+} from "firebase/firestore";
+import { db } from "@/helpers/firebase";
+import { useFormStore } from "@/stores/form";
 
 export const useWishlistStore = defineStore("wishlist", () => {
   // #region Form toggler
@@ -90,9 +99,9 @@ export const useWishlistStore = defineStore("wishlist", () => {
   const itemList = reactive<Array<WLItem>>([]);
 
   // #region Item list getters
-  const getItemById = computed<(i: number) => WLItem | undefined>(
+  const getItemById = computed<(i: string) => WLItem | undefined>(
     () =>
-      (id: number): WLItem | undefined =>
+      (id: string): WLItem | undefined =>
         itemList.find((i: WLItem) => i.id === id)
   );
 
@@ -112,9 +121,9 @@ export const useWishlistStore = defineStore("wishlist", () => {
    *
    * @param {number} id The item's id
    */
-  const getItemIndexById = computed<(id: number) => number>(
+  const getItemIndexById = computed<(id: string) => number>(
     () =>
-      (id: number): number =>
+      (id: string): number =>
         itemList.findIndex((i) => i.id === id)
   );
   // #endregion
@@ -140,10 +149,55 @@ export const useWishlistStore = defineStore("wishlist", () => {
    *
    * returns the deleted item
    */
-  const deleteItemById: Function = (id: number): Array<WLItem> | null => {
+  const deleteItemById: Function = (id: string): Array<WLItem> | null => {
     // TODO: delete from db
     const index: number = getItemIndexById.value(id);
     return index === -1 ? null : itemList.splice(index, 1);
+  };
+  // #endregion
+
+  // #region Importing some helpful stuff from the form store
+  const formStore = useFormStore();
+
+  const {
+    setFormProcessingMessage,
+    hideFormMessage,
+    showFormMessage,
+  }: {
+    setFormProcessingMessage: Function;
+    hideFormMessage: Function;
+    showFormMessage: Function;
+  } = formStore;
+  // #endregion
+
+  // #region Actions that work with the database, not just the app's state
+  const createWishlist: Function = async (
+    w: WLWishlist
+  ): Promise<string | null> => {
+    showFormMessage("Your wishlist is being created...");
+
+    try {
+      const newWishlist: DocumentReference<DocumentData> = await addDoc(
+        collection(db, "wishlists"),
+        w
+      );
+
+      setFormProcessingMessage({
+        type: "success",
+        message: "Wishlist successfully created!",
+      });
+
+      hideFormMessage();
+      return newWishlist.id;
+    } catch (e: any) {
+      setFormProcessingMessage({
+        type: "error",
+        message: e,
+      });
+
+      hideFormMessage();
+      return null;
+    }
   };
   // #endregion
 
@@ -158,5 +212,6 @@ export const useWishlistStore = defineStore("wishlist", () => {
     getItemByIndex,
     addItemToList,
     deleteItemById,
+    createWishlist,
   };
 });

@@ -19,7 +19,7 @@ import { useRouter } from "vue-router";
 
 import WLAuthLayout from "@/features/auth/layout/WLAuthLayout.vue";
 import WLGenericForm from "@/components/WLGenericForm.vue";
-import WLAuthSwitcher from "@/features/auth/views/partials/WLAuthSwitcher.vue";
+import WLAuthSwitcher from "@/features/auth/components/WLAuthSwitcher.vue";
 
 import { AuthTab, type ExtendedEmailUserAuth } from "@/features/auth/types";
 import type { WLForm } from "@/types/forms.types";

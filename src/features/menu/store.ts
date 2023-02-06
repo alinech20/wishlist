@@ -36,6 +36,12 @@ export const useMenuStore = defineStore("menu", () => {
         active: computed<boolean>(() => activeRoute.value === "Groups"),
         onClick: () => navigateTo("/groups", "Groups"),
       } as Tab,
+      {
+        name: "Wishlists",
+        location: "/wishlist",
+        active: computed<boolean>(() => activeRoute.value === "Wishlist"),
+        onClick: () => navigateTo("/wishlists", "Wishlists"),
+      },
     ] as Array<Tab>,
   });
 

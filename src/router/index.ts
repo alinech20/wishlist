@@ -3,13 +3,19 @@ import { auth } from "@/helpers/firebase";
 
 import AuthView from "@/features/auth/views/WLAuth.vue";
 import DashboardView from "@/views/WLDashboard.vue";
+
 import GroupsView from "@/features/groups/views/WLGroups.vue";
 import GroupsDashboardView from "@/features/groups/views/partials/WLGroupsDashboard.vue";
 import GroupsCreateView from "@/features/groups/views/partials/WLCreateGroup.vue";
 import GroupsInviteView from "@/features/groups/views/partials/WLInvite.vue";
 import GroupsJoinView from "@/features/groups/views/partials/WLJoinGroup.vue";
 import GroupsManageView from "@/features/groups/views/partials/WLManageGroups.vue";
-import WishlistView from "@/views/WLWishlist.vue";
+
+import WishlistView from "@/features/wishlist/views/WLWishlist.vue";
+import WishlistDashboardView from "@/features/wishlist/views/partials/WLWishlistDashboard.vue";
+import WishlistCreateView from "@/features/wishlist/views/partials/WLWishlistCreate.vue";
+import WishlistShareView from "@/features/wishlist/views/partials/WLWishlistShare.vue";
+import WishlistManageView from "@/features/wishlist/views/partials/WLWishlistManage.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -63,12 +69,34 @@ const router = createRouter({
       ],
     },
     {
-      path: "/wishlist",
-      name: "Wishlist",
+      path: "/wishlists",
+      name: "Wishlists",
       component: WishlistView,
       meta: {
         requiresAuth: true,
       },
+      children: [
+        {
+          path: "",
+          name: "Wishlists Dashboard",
+          component: WishlistDashboardView,
+        },
+        {
+          path: "create",
+          name: "Create Wishlist",
+          component: WishlistCreateView,
+        },
+        {
+          path: "share",
+          name: "Share Wishlist",
+          component: WishlistShareView,
+        },
+        {
+          path: "manage",
+          name: "Manage Wishlists",
+          component: WishlistManageView,
+        },
+      ],
     },
     {
       path: "/:catchAll(.*)*",

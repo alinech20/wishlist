@@ -1,14 +1,6 @@
-import type { ActionCard } from "@/types/action-cards.types";
 import { defineStore, storeToRefs } from "pinia";
-import { markRaw, reactive, type Ref } from "vue";
-import { useRouter } from "vue-router";
+import type { Ref } from "vue";
 
-import {
-  AddToGroupIcon,
-  CreateGroupIcon,
-  JoinGroupIcon,
-  ManageGroupsIcon,
-} from "@/components/ui/icons";
 import {
   type WLGroup,
   WLGroupMembershipStatus,
@@ -38,33 +30,6 @@ import type { QueryFieldFilterConstraint } from "firebase/firestore";
 import { getNicelyFormattedCurrentDateTime } from "@/helpers/date";
 
 export const useGroupsStore = defineStore("groups", () => {
-  const router = useRouter();
-
-  // #region Action cards
-  const groupsActions = reactive<Array<ActionCard>>([
-    {
-      icon: markRaw(CreateGroupIcon),
-      name: "Create group",
-      action: () => router.push({ name: "Create Group" }),
-    },
-    {
-      icon: markRaw(JoinGroupIcon),
-      name: "Join group",
-      action: () => router.push({ name: "Join Group" }),
-    },
-    {
-      icon: markRaw(AddToGroupIcon),
-      name: "Invite",
-      action: () => router.push({ name: "Invite to Group" }),
-    },
-    {
-      icon: markRaw(ManageGroupsIcon),
-      name: "Manage groups",
-      action: () => router.push({ name: "Manage Groups" }),
-    },
-  ]);
-  // #endregion
-
   // #region Importing some helpful stuff from the form store
   const formStore = useFormStore();
 
@@ -432,7 +397,6 @@ export const useGroupsStore = defineStore("groups", () => {
   // #endregion
 
   return {
-    groupsActions,
     getGroupById,
     isUserInGroup,
     createGroup,

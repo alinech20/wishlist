@@ -39,6 +39,7 @@ export type WLFormSubmissionMessage = {
 export type WLForm = {
   id?: string;
   title: string;
+  additionalInfo?: string;
   validationSchema: Object;
   fields: Array<WLField>;
   buttons: Array<WLButton>;

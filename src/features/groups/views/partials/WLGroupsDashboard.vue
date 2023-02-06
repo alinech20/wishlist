@@ -1,16 +1,43 @@
 <template>
-  <WLActionCardList :actionCards="groupsActions"></WLActionCardList>
+  <WLActionCardList :action-cards="groupsActions"></WLActionCardList>
 </template>
 
 <script setup lang="ts">
-import type { Ref } from "vue";
-import { storeToRefs } from "pinia";
+import { markRaw } from "vue";
+import { useRouter } from "vue-router";
 
 import type { ActionCard } from "@/types/action-cards.types";
-import { useGroupsStore } from "@/features/groups/store";
-
 import WLActionCardList from "@/components/WLActionCardList.vue";
 
-const { groupsActions }: { groupsActions: Ref<Array<ActionCard>> } =
-  storeToRefs(useGroupsStore());
+import {
+  AddToGroupIcon,
+  CreateGroupIcon,
+  JoinGroupIcon,
+  ManageIcon,
+} from "@/components/ui/icons";
+
+const router = useRouter();
+
+const groupsActions: Array<ActionCard> = [
+  {
+    icon: markRaw(CreateGroupIcon),
+    name: "Create group",
+    action: () => router.push({ name: "Create Group" }),
+  },
+  {
+    icon: markRaw(JoinGroupIcon),
+    name: "Join group",
+    action: () => router.push({ name: "Join Group" }),
+  },
+  {
+    icon: markRaw(AddToGroupIcon),
+    name: "Invite",
+    action: () => router.push({ name: "Invite to Group" }),
+  },
+  {
+    icon: markRaw(ManageIcon),
+    name: "Manage groups",
+    action: () => router.push({ name: "Manage Groups" }),
+  },
+];
 </script>

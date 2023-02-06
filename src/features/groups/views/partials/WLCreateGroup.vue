@@ -132,10 +132,6 @@ const getCreateGroupForm = computed<WLForm>(() => createGroupForm);
 // #endregion
 
 // #region Create new group logic
-const {
-  createGroup,
-  addUserToGroup,
-}: { createGroup: Function; addUserToGroup: Function } = useGroupsStore();
 
 /**
  * Creates a new group and automatically adds the user that created it
@@ -161,6 +157,11 @@ async function createNewGroup(
 
   newGroup.createdOn = getISOFormattedCurrentDateTime();
   newGroup.modifiedOn = newGroup.createdOn;
+
+  const {
+    createGroup,
+    addUserToGroup,
+  }: { createGroup: Function; addUserToGroup: Function } = useGroupsStore();
 
   // try to create the group
   const groupId = await createGroup(newGroup);

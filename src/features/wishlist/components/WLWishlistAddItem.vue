@@ -1,37 +1,32 @@
 <template>
-  <WLBaseLayout>
-    <WLGenericForm
-      class="wl-form--fields-flex-column"
-      v-if="showForm"
-      v-bind="wishlistForm"
-      @submitForm="addToWishlist"
-    ></WLGenericForm>
-    <WLBaseButton
-      v-else
-      :name="'show-form-button'"
-      :type="'button'"
-      :text="'Add new item'"
-      :form="'AddItemForm'"
-      :xClasses="'wl-button--primary'"
-      :buttonClick="toggleForm"
-    ></WLBaseButton>
-    <WLItemList></WLItemList>
-  </WLBaseLayout>
+  <WLGenericForm
+    class="wl-form--fields-flex-column"
+    v-if="showForm"
+    v-bind="wishlistForm"
+    @submitForm="addToWishlist"
+  ></WLGenericForm>
+  <WLBaseButton
+    v-else
+    :name="'show-form-button'"
+    :type="'button'"
+    :text="'Add new item'"
+    :form="'AddItemForm'"
+    :xClasses="'wl-button--primary'"
+    :buttonClick="toggleForm"
+  ></WLBaseButton>
 </template>
 
 <script setup lang="ts">
 import type { Ref } from "vue";
+import { storeToRefs } from "pinia";
 
-import WLBaseLayout from "@/layouts/WLBaseLayout.vue";
 import WLGenericForm from "@/components/WLGenericForm.vue";
-// import WLItemList from "@/components/WLItemList.vue";
 import WLBaseButton from "@/components/ui/WLBaseButton.vue";
 
-import type { WLItem } from "@/types/wishlist.types";
+import type { WLItem } from "@/features/wishlist/types";
 import type { WLForm } from "@/types/forms.types";
 
-import { useWishlistStore } from "@/stores/wishlist";
-import { storeToRefs } from "pinia";
+import { useWishlistStore } from "@/features/wishlist/store";
 
 const wishlistStore = useWishlistStore();
 const { toggleForm }: { toggleForm: Function } = wishlistStore;
