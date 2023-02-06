@@ -4,6 +4,11 @@ import { auth } from "@/helpers/firebase";
 import AuthView from "@/views/WLAuth.vue";
 import DashboardView from "@/views/WLDashboard.vue";
 import GroupsView from "@/groups/views/WLGroups.vue";
+import GroupsDashboardView from "@/groups/views/partials/WLGroupsDashboard.vue";
+import GroupsCreateView from "@/groups/views/partials/WLCreateGroup.vue";
+import GroupsInviteView from "@/groups/views/partials/WLInvite.vue";
+import GroupsJoinView from "@/groups/views/partials/WLJoinGroup.vue";
+import GroupsManageView from "@/groups/views/partials/WLManageGroups.vue";
 import WishlistView from "@/views/WLWishlist.vue";
 
 const router = createRouter({
@@ -29,6 +34,33 @@ const router = createRouter({
       meta: {
         requiresAuth: true,
       },
+      children: [
+        {
+          path: "",
+          name: "Groups Dashboard",
+          component: GroupsDashboardView,
+        },
+        {
+          path: "create",
+          name: "Create Group",
+          component: GroupsCreateView,
+        },
+        {
+          path: "join",
+          name: "Join Group",
+          component: GroupsJoinView,
+        },
+        {
+          path: "invite",
+          name: "Invite to Group",
+          component: GroupsInviteView,
+        },
+        {
+          path: "manage",
+          name: "Manage Groups",
+          component: GroupsManageView,
+        },
+      ],
     },
     {
       path: "/wishlist",

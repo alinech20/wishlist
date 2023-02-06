@@ -1,6 +1,7 @@
 import type { ActionCard } from "@/types/action-cards.types";
 import { defineStore, storeToRefs } from "pinia";
 import { markRaw, reactive, ref, type Ref } from "vue";
+import { useRouter } from "vue-router";
 
 import {
   AddToGroupIcon,
@@ -37,32 +38,29 @@ import type { QueryFieldFilterConstraint } from "firebase/firestore";
 import { getNicelyFormattedCurrentDateTime } from "@/helpers/date";
 
 export const useGroupsStore = defineStore("groups", () => {
-  // #region Active view logic (groups subpage)
-  const activeView = ref<string>("home");
-  const setActiveView: Function = (v: string): string => (activeView.value = v);
-  // #endregion
+  const router = useRouter();
 
   // #region Action cards
   const groupsActions = reactive<Array<ActionCard>>([
     {
       icon: markRaw(CreateGroupIcon),
       name: "Create group",
-      action: () => setActiveView("create"),
+      action: () => router.push({ name: "Create Group" }),
     },
     {
       icon: markRaw(JoinGroupIcon),
       name: "Join group",
-      action: () => setActiveView("join"),
+      action: () => router.push({ name: "Join Group" }),
     },
     {
       icon: markRaw(AddToGroupIcon),
       name: "Invite",
-      action: () => setActiveView("invite"),
+      action: () => router.push({ name: "Invite to Group" }),
     },
     {
       icon: markRaw(ManageGroupsIcon),
       name: "Manage groups",
-      action: () => setActiveView("manage"),
+      action: () => router.push({ name: "Manage Groups" }),
     },
   ]);
   // #endregion
@@ -435,7 +433,6 @@ export const useGroupsStore = defineStore("groups", () => {
 
   return {
     groupsActions,
-    activeView,
     getGroupById,
     isUserInGroup,
     createGroup,
