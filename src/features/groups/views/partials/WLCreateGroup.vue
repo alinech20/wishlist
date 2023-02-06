@@ -11,12 +11,12 @@ import { storeToRefs } from "pinia";
 import { computed, reactive, type Ref } from "vue";
 import { getISOFormattedCurrentDateTime } from "@/helpers/date";
 
-import { WLGroupMembershipStatus, type WLGroup } from "@/groups/types";
+import { WLGroupMembershipStatus, type WLGroup } from "@/features/groups/types";
 import type { WLButton, WLField, WLForm } from "@/types/forms.types";
-import type { WLUser } from "@/types/auth.types";
+import type { WLUser } from "@/features/auth/types";
 
-import { useGroupsStore } from "@/groups/store";
-import { useAuthStore } from "@/stores/auth";
+import { useGroupsStore } from "@/features/groups/store";
+import { useAuthStore } from "@/features/auth/store";
 
 import WLGenericForm from "@/components/WLGenericForm.vue";
 

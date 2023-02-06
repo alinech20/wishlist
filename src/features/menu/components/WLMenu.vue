@@ -8,9 +8,9 @@
 </template>
 
 <script setup lang="ts">
-import type { TabCollection } from "@/types/tabs.types";
+import type { TabCollection } from "@/features/menu/types";
 
-import WLTabSelector from "./WLTabSelector.vue";
+import WLTabSelector from "@/features/menu/components/WLTabSelector.vue";
 
 const props = defineProps<{
   menuItems: TabCollection;
@@ -18,5 +18,5 @@ const props = defineProps<{
 </script>
 
 <style lang="scss">
-@use "@/assets/styles/components/wl-menu.scss";
+@use "@/features/menu/assets/styles/wl-menu.scss";
 </style>

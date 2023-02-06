@@ -34,11 +34,14 @@
 import { computed, onBeforeMount, type Ref } from "vue";
 import { storeToRefs } from "pinia";
 
-import WLGroupCardList from "@/groups/components/WLGroupCardList.vue";
+import WLGroupCardList from "@/features/groups/components/WLGroupCardList.vue";
 
-import { WLGroupMembershipStatus, type WLUserGroup } from "@/groups/types";
+import {
+  WLGroupMembershipStatus,
+  type WLUserGroup,
+} from "@/features/groups/types";
 import { useUserStore } from "@/stores/user";
-import { initializeStateGroups } from "@/groups/helper";
+import { initializeStateGroups } from "@/features/groups/helper";
 
 // all groups
 const { groups }: { groups: Ref<Array<WLUserGroup>> } = storeToRefs(
@@ -69,5 +72,5 @@ onBeforeMount(async () => await initializeStateGroups());
 </script>
 
 <style lang="scss">
-@use "@/groups/assets/styles/partials/wl-manage-groups.scss";
+@use "@/features/groups/assets/styles/partials/wl-manage-groups.scss";
 </style>

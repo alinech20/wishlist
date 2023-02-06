@@ -8,16 +8,16 @@
 
 <script setup lang="ts">
 import { computed, reactive, type Ref } from "vue";
+import { storeToRefs } from "pinia";
 
-import type { WLUser } from "@/types/auth.types";
+import type { WLUser } from "@/features/auth/types";
 import type { WLButton, WLField, WLForm } from "@/types/forms.types";
 
-import { useGroupsStore } from "@/groups/store";
-import { useAuthStore } from "@/stores/auth";
+import { useGroupsStore } from "@/features/groups/store";
+import { useAuthStore } from "@/features/auth/store";
 
 import WLGenericForm from "@/components/WLGenericForm.vue";
-import { storeToRefs } from "pinia";
-import { WLGroupMembershipStatus } from "@/groups/types";
+import { WLGroupMembershipStatus } from "@/features/groups/types";
 
 // #region Join existing group form data and getter
 const joinGroupForm = reactive<WLForm>({

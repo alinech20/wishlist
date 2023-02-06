@@ -12,7 +12,7 @@
 </template>
 
 <script setup lang="ts">
-import { AuthTab } from "@/types/auth.types";
+import { AuthTab } from "@/features/auth/types";
 import { type ComputedRef, computed } from "vue";
 
 const props = defineProps<{

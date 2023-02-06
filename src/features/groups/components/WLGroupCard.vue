@@ -31,17 +31,20 @@
 
 <script setup lang="ts">
 import { markRaw, type Ref } from "vue";
+import { storeToRefs } from "pinia";
 
 import type { WLButton } from "@/types/forms.types";
-import { WLGroupMembershipStatus, type WLUserGroup } from "@/groups/types";
+import {
+  WLGroupMembershipStatus,
+  type WLUserGroup,
+} from "@/features/groups/types";
 
 import WLBaseButton from "@/components/ui/WLBaseButton.vue";
-import { useGroupsStore } from "@/groups/store";
+import { useGroupsStore } from "@/features/groups/store";
 
 import { CancelIcon, OKIcon } from "@/components/ui/icons";
-import { storeToRefs } from "pinia";
-import { useAuthStore } from "@/stores/auth";
-import type { WLUser } from "@/types/auth.types";
+import { useAuthStore } from "@/features/auth/store";
+import type { WLUser } from "@/features/auth/types";
 
 const props: WLUserGroup = defineProps<{
   joinedOn: string;
@@ -139,5 +142,5 @@ const groupActions: Function = (): Array<WLButton> | undefined => {
 </script>
 
 <style lang="scss">
-@use "@/groups/assets/styles/wl-group-card.scss";
+@use "@/features/groups/assets/styles/wl-group-card.scss";
 </style>

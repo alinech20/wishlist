@@ -1,14 +1,14 @@
 import { createRouter, createWebHistory } from "vue-router";
 import { auth } from "@/helpers/firebase";
 
-import AuthView from "@/views/WLAuth.vue";
+import AuthView from "@/features/auth/views/WLAuth.vue";
 import DashboardView from "@/views/WLDashboard.vue";
-import GroupsView from "@/groups/views/WLGroups.vue";
-import GroupsDashboardView from "@/groups/views/partials/WLGroupsDashboard.vue";
-import GroupsCreateView from "@/groups/views/partials/WLCreateGroup.vue";
-import GroupsInviteView from "@/groups/views/partials/WLInvite.vue";
-import GroupsJoinView from "@/groups/views/partials/WLJoinGroup.vue";
-import GroupsManageView from "@/groups/views/partials/WLManageGroups.vue";
+import GroupsView from "@/features/groups/views/WLGroups.vue";
+import GroupsDashboardView from "@/features/groups/views/partials/WLGroupsDashboard.vue";
+import GroupsCreateView from "@/features/groups/views/partials/WLCreateGroup.vue";
+import GroupsInviteView from "@/features/groups/views/partials/WLInvite.vue";
+import GroupsJoinView from "@/features/groups/views/partials/WLJoinGroup.vue";
+import GroupsManageView from "@/features/groups/views/partials/WLManageGroups.vue";
 import WishlistView from "@/views/WLWishlist.vue";
 
 const router = createRouter({

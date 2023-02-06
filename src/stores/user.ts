@@ -1,10 +1,13 @@
 import { defineStore, storeToRefs } from "pinia";
 import { computed, reactive, ref, type Ref } from "vue";
 
-import type { WLUser } from "@/types/auth.types";
-import type { WLGroupMembershipStatus, WLUserGroup } from "@/groups/types";
+import type { WLUser } from "@/features/auth/types";
+import type {
+  WLGroupMembershipStatus,
+  WLUserGroup,
+} from "@/features/groups/types";
 
-import { useAuthStore } from "./auth";
+import { useAuthStore } from "@/features/auth/store";
 
 export const useUserStore = defineStore("user", () => {
   const { loggedUser }: { loggedUser: Ref<WLUser> } = storeToRefs(

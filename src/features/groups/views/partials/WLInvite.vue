@@ -11,7 +11,10 @@ import { computed, onBeforeMount, reactive, ref } from "vue";
 
 import WLGenericForm from "@/components/WLGenericForm.vue";
 
-import { WLGroupMembershipStatus, type WLUserGroup } from "@/groups/types";
+import {
+  WLGroupMembershipStatus,
+  type WLUserGroup,
+} from "@/features/groups/types";
 import type {
   WLButton,
   WLDropdownOption,
@@ -19,9 +22,9 @@ import type {
   WLForm,
 } from "@/types/forms.types";
 
-import { useGroupsStore } from "@/groups/store";
-import { useAuthStore } from "@/stores/auth";
-import { initializeStateGroups } from "@/groups/helper";
+import { useGroupsStore } from "@/features/groups/store";
+import { useAuthStore } from "@/features/auth/store";
+import { initializeStateGroups } from "@/features/groups/helper";
 
 // #region Groups the user's a part of
 // accepted groups

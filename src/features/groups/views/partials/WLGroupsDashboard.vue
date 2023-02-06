@@ -7,7 +7,7 @@ import type { Ref } from "vue";
 import { storeToRefs } from "pinia";
 
 import type { ActionCard } from "@/types/action-cards.types";
-import { useGroupsStore } from "@/groups/store";
+import { useGroupsStore } from "@/features/groups/store";
 
 import WLActionCardList from "@/components/WLActionCardList.vue";
 

@@ -1,6 +1,6 @@
 import type { ActionCard } from "@/types/action-cards.types";
 import { defineStore, storeToRefs } from "pinia";
-import { markRaw, reactive, ref, type Ref } from "vue";
+import { markRaw, reactive, type Ref } from "vue";
 import { useRouter } from "vue-router";
 
 import {
@@ -13,10 +13,10 @@ import {
   type WLGroup,
   WLGroupMembershipStatus,
   type WLUserGroup,
-} from "@/groups/types";
+} from "@/features/groups/types";
 
-import { useFormStore } from "../stores/form";
-import { useUserStore } from "../stores/user";
+import { useFormStore } from "@/stores/form";
+import { useUserStore } from "@/stores/user";
 
 import {
   addDoc,

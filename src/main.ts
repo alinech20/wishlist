@@ -7,8 +7,8 @@ import { veeValidatePlugin } from "@/helpers/validators";
 
 import { auth } from "@/helpers/firebase";
 import { onAuthStateChanged } from "@firebase/auth";
-import { useAuthStore } from "./stores/auth";
-import type { WLUser } from "./types/auth.types";
+import { useAuthStore } from "@/features/auth/store";
+import type { WLUser } from "@/features/auth/types";
 
 let app: App<Element> | null = null;
 

@@ -10,5 +10,5 @@
 <script setup lang="ts"></script>
 
 <style lang="scss">
-@use "@/assets/styles/layouts/wl-auth-layout.scss";
+@use "@/features/auth/assets/styles/wl-auth-layout.scss";
 </style>

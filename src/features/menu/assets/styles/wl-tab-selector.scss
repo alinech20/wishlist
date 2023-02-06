@@ -1,8 +1,8 @@
-@use "../_mixins/alignment";
-@use "../_vars/colors";
-@use "../_vars/shadows";
-@use "../_vars/sizes";
-@use "../_vars/spacers";
+@use "/src/assets/styles/_mixins/alignment";
+@use "/src/assets/styles/_vars/colors";
+@use "/src/assets/styles/_vars/shadows";
+@use "/src/assets/styles/_vars/sizes";
+@use "/src/assets/styles/_vars/spacers";
 
 .wl-tabs {
   @include alignment.flex(row);

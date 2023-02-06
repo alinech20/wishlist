@@ -2,9 +2,9 @@ import type {
   EmailUserAuth,
   ExtendedEmailUserAuth,
   WLUser,
-} from "@/types/auth.types";
+} from "@/features/auth/types";
 import type { WLForm, WLField, WLButton } from "@/types/forms.types";
-import { useFormStore } from "./form";
+import { useFormStore } from "@/stores/form";
 
 import { auth, db } from "@/helpers/firebase";
 import { doc, getDoc, setDoc, type DocumentData } from "@firebase/firestore";

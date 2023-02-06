@@ -14,11 +14,10 @@
 </template>
 
 <script setup lang="ts">
-// import WLTab from "./ui/WLTab.vue";
-import WLBaseButton from "./ui/WLBaseButton.vue";
+import WLBaseButton from "@/components/ui/WLBaseButton.vue";
 
 import { customComponentsValidation } from "@/helpers/validators";
-import type { Tab } from "@/types/tabs.types";
+import type { Tab } from "@/features/menu/types";
 
 const props = defineProps({
   title: {
@@ -38,5 +37,5 @@ const props = defineProps({
 </script>
 
 <style lang="scss">
-@use "@/assets/styles/components/wl-tab-selector.scss";
+@use "@/features/menu/assets/styles/wl-tab-selector.scss";
 </style>

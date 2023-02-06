@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import { computed, reactive, ref } from "vue";
 
-import type { TabCollection, Tab } from "@/types/tabs.types";
+import type { TabCollection, Tab } from "@/features/menu/types";
 import { useRouter } from "vue-router";
 
 export const useMenuStore = defineStore("menu", () => {

@@ -20,10 +20,10 @@
 
 <script setup lang="ts">
 import { MenuIcon, AccountIcon } from "@/components/ui/icons";
-import WLMenu from "./WLMenu.vue";
+import WLMenu from "@/features/menu/components/WLMenu.vue";
 
-import { useMenuStore } from "@/stores/menu";
-import type { TabCollection } from "@/types/tabs.types";
+import { useMenuStore } from "@/features/menu/store";
+import type { TabCollection } from "@/features/menu/types";
 
 import { storeToRefs } from "pinia";
 import type { Ref } from "vue";

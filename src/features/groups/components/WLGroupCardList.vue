@@ -9,7 +9,7 @@
 </template>
 
 <script setup lang="ts">
-import type { WLUserGroup } from "@/groups/types";
+import type { WLUserGroup } from "@/features/groups/types";
 import WLGroupCard from "./WLGroupCard.vue";
 
 const props = defineProps<{
