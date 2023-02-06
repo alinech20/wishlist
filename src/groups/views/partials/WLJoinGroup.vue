@@ -8,17 +8,16 @@
 
 <script setup lang="ts">
 import { computed, reactive, type Ref } from "vue";
-import { getISOFormattedCurrentDateTime } from "@/helpers/date";
 
 import type { WLUser } from "@/types/auth.types";
 import type { WLButton, WLField, WLForm } from "@/types/forms.types";
 
-import { useGroupsStore } from "@/stores/groups";
+import { useGroupsStore } from "@/groups/store";
 import { useAuthStore } from "@/stores/auth";
 
-import WLGenericForm from "../../WLGenericForm.vue";
+import WLGenericForm from "@/components/WLGenericForm.vue";
 import { storeToRefs } from "pinia";
-import { WLGroupMembershipStatus } from "@/types/wishlist.types";
+import { WLGroupMembershipStatus } from "@/groups/types";
 
 // #region Join existing group form data and getter
 const joinGroupForm = reactive<WLForm>({
@@ -51,11 +50,11 @@ const getJoinGroupForm = computed<WLForm>(() => joinGroupForm);
 
 // #region Join existing group logic
 const {
-  addUserToGroup,
+  inviteToGroup,
   getGroupById,
   isUserInGroup,
 }: {
-  addUserToGroup: Function;
+  inviteToGroup: Function;
   getGroupById: Function;
   isUserInGroup: Function;
 } = useGroupsStore();
@@ -86,14 +85,11 @@ async function joinExistingGroup(
     const alreadyMember = await isUserInGroup(loggedUser.value.uid, id);
 
     if (alreadyMember === false) {
-      const dataSet: Object = {
-        status: WLGroupMembershipStatus.REQUESTED,
-        userId: loggedUser.value.uid,
-        groupId: id,
-        admin: false,
-        joinedOn: getISOFormattedCurrentDateTime(),
-      };
-      success = addUserToGroup(dataSet);
+      success = inviteToGroup(
+        loggedUser.value.uid,
+        id,
+        WLGroupMembershipStatus.REQUESTED
+      );
 
       resetForm();
     }

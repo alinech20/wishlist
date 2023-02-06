@@ -1,0 +1,42 @@
+@use "/src/assets/styles/_mixins/alignment";
+@use "/src/assets/styles/_vars/colors";
+@use "/src/assets/styles/_vars/shadows";
+@use "/src/assets/styles/_vars/spacers";
+
+.wl-group-card {
+  background-color: colors.$Secondary;
+  margin: spacers.$SmallerSpacer 0;
+  padding: spacers.$SmallerSpacer;
+
+  section p {
+    margin: 0;
+  }
+
+  .group-card__details {
+    @include alignment.flex(row);
+    justify-content: space-around;
+  }
+
+  .group-card__actions {
+    @include alignment.flex(row);
+    justify-content: flex-end;
+
+    .wl-button-wrapper {
+      width: unset;
+      margin: spacers.$TinySpacer;
+
+      button {
+        position: relative;
+        box-shadow: shadows.$ButtonSubtle;
+        padding: 0;
+
+        svg {
+          width: 18px;
+          height: 18px;
+          @include alignment.absolute-centerer(true, true);
+          fill: colors.$Background;
+        }
+      }
+    }
+  }
+}

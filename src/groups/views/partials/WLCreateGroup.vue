@@ -7,18 +7,18 @@
 </template>
 
 <script setup lang="ts">
+import { storeToRefs } from "pinia";
 import { computed, reactive, type Ref } from "vue";
 import { getISOFormattedCurrentDateTime } from "@/helpers/date";
 
-import { WLGroupMembershipStatus, type WLGroup } from "@/types/wishlist.types";
+import { WLGroupMembershipStatus, type WLGroup } from "@/groups/types";
 import type { WLButton, WLField, WLForm } from "@/types/forms.types";
 import type { WLUser } from "@/types/auth.types";
 
-import { useGroupsStore } from "@/stores/groups";
+import { useGroupsStore } from "@/groups/store";
 import { useAuthStore } from "@/stores/auth";
 
-import WLGenericForm from "../../WLGenericForm.vue";
-import { storeToRefs } from "pinia";
+import WLGenericForm from "@/components/WLGenericForm.vue";
 
 // #region Add or remove friend email fields
 /**

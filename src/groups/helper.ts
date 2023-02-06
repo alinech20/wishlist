@@ -1,11 +1,8 @@
 import { useAuthStore } from "@/stores/auth";
-import { useGroupsStore } from "@/stores/groups";
+import { useGroupsStore } from "@/groups/store";
 import { useUserStore } from "@/stores/user";
 import type { WLUser } from "@/types/auth.types";
-import type {
-  WLGroupMembershipStatus,
-  WLUserGroup,
-} from "@/types/wishlist.types";
+import type { WLGroupMembershipStatus, WLUserGroup } from "@/groups/types";
 import { storeToRefs } from "pinia";
 import type { Ref } from "vue";
 

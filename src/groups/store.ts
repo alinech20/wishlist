@@ -12,14 +12,15 @@ import {
   type WLGroup,
   WLGroupMembershipStatus,
   type WLUserGroup,
-} from "@/types/wishlist.types";
+} from "@/groups/types";
 
-import { useFormStore } from "./form";
-import { useUserStore } from "./user";
+import { useFormStore } from "../stores/form";
+import { useUserStore } from "../stores/user";
 
 import {
   addDoc,
   collection,
+  deleteDoc,
   doc,
   DocumentReference,
   DocumentSnapshot,
@@ -323,7 +324,8 @@ export const useGroupsStore = defineStore("groups", () => {
    */
   const inviteToGroup: Function = async (
     uid: string,
-    gid: string
+    gid: string,
+    status?: WLGroupMembershipStatus
   ): Promise<void> => {
     try {
       showFormMessage("Inviting user(s)...");
@@ -331,7 +333,7 @@ export const useGroupsStore = defineStore("groups", () => {
 
       const data = {
         requester: getUserData.value.user.uid,
-        status: WLGroupMembershipStatus.INVITED,
+        status: status || WLGroupMembershipStatus.INVITED,
         userId: uid,
         groupId: gid,
         admin: false,
@@ -415,11 +417,15 @@ export const useGroupsStore = defineStore("groups", () => {
     try {
       const docToUpdate = await fetchUserGroupRelation(uid, gid);
       if (docToUpdate) {
-        updateStateGroupStatus(gid, status);
+        if (!status) {
+          return await deleteDoc(docToUpdate);
+        } else {
+          updateStateGroupStatus(gid, status);
 
-        return await updateDoc(docToUpdate, {
-          status: status,
-        });
+          return await updateDoc(docToUpdate, {
+            status: status,
+          });
+        }
       }
     } catch (e: any) {
       console.error(e);

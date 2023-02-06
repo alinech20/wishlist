@@ -3,7 +3,7 @@ import { auth } from "@/helpers/firebase";
 
 import AuthView from "@/views/WLAuth.vue";
 import DashboardView from "@/views/WLDashboard.vue";
-import GroupsView from "@/views/WLGroups.vue";
+import GroupsView from "@/groups/views/WLGroups.vue";
 import WishlistView from "@/views/WLWishlist.vue";
 
 const router = createRouter({

@@ -2,10 +2,7 @@ import { defineStore, storeToRefs } from "pinia";
 import { computed, reactive, ref, type Ref } from "vue";
 
 import type { WLUser } from "@/types/auth.types";
-import type {
-  WLGroupMembershipStatus,
-  WLUserGroup,
-} from "@/types/wishlist.types";
+import type { WLGroupMembershipStatus, WLUserGroup } from "@/groups/types";
 
 import { useAuthStore } from "./auth";
 

@@ -11,10 +11,7 @@ import { computed, onBeforeMount, reactive, ref } from "vue";
 
 import WLGenericForm from "@/components/WLGenericForm.vue";
 
-import {
-  WLGroupMembershipStatus,
-  type WLUserGroup,
-} from "@/types/wishlist.types";
+import { WLGroupMembershipStatus, type WLUserGroup } from "@/groups/types";
 import type {
   WLButton,
   WLDropdownOption,
@@ -22,10 +19,9 @@ import type {
   WLForm,
 } from "@/types/forms.types";
 
-import { useGroupsStore } from "@/stores/groups";
+import { useGroupsStore } from "@/groups/store";
 import { useAuthStore } from "@/stores/auth";
-
-import { initializeStateGroups } from "@/helpers/groups";
+import { initializeStateGroups } from "@/groups/helper";
 
 // #region Groups the user's a part of
 // accepted groups

@@ -33,13 +33,10 @@
 import { markRaw, type Ref } from "vue";
 
 import type { WLButton } from "@/types/forms.types";
-import {
-  WLGroupMembershipStatus,
-  type WLUserGroup,
-} from "@/types/wishlist.types";
+import { WLGroupMembershipStatus, type WLUserGroup } from "@/groups/types";
 
 import WLBaseButton from "@/components/ui/WLBaseButton.vue";
-import { useGroupsStore } from "@/stores/groups";
+import { useGroupsStore } from "@/groups/store";
 
 import { CancelIcon, OKIcon } from "@/components/ui/icons";
 import { storeToRefs } from "pinia";
@@ -80,6 +77,20 @@ const handleInvite: Function = async (v: boolean): Promise<void> => {
   );
 };
 
+const cancelRequest: Function = async (): Promise<void> => {
+  const { updateUserGroupRelation }: { updateUserGroupRelation: Function } =
+    useGroupsStore();
+  const { loggedUser }: { loggedUser: Ref<WLUser> } = storeToRefs(
+    useAuthStore()
+  );
+
+  return await updateUserGroupRelation(
+    null,
+    loggedUser.value.uid,
+    props.group.id
+  );
+};
+
 const invitationActions: Array<WLButton> = [
   {
     key: "decline",
@@ -103,10 +114,24 @@ const invitationActions: Array<WLButton> = [
   } as WLButton,
 ];
 
+const requestsActions: Array<WLButton> = [
+  {
+    key: "cancel",
+    name: "cancel",
+    type: "button",
+    text: "",
+    icon: markRaw(CancelIcon),
+    xClasses: "wl-button--round wl-button--xs wl-button--secondary-dark",
+    buttonClick: cancelRequest,
+  },
+];
+
 const groupActions: Function = (): Array<WLButton> | undefined => {
   switch (props.status) {
     case WLGroupMembershipStatus.INVITED:
       return invitationActions;
+    case WLGroupMembershipStatus.REQUESTED:
+      return requestsActions;
     default:
       return;
   }
@@ -114,5 +139,5 @@ const groupActions: Function = (): Array<WLButton> | undefined => {
 </script>
 
 <style lang="scss">
-@use "@/assets/styles/components/groups/wl-group-card.scss";
+@use "@/groups/assets/styles/wl-group-card.scss";
 </style>

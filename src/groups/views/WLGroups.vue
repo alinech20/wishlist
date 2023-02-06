@@ -16,14 +16,14 @@ import { computed, type Ref } from "vue";
 import { storeToRefs } from "pinia";
 
 import type { ActionCard } from "@/types/action-cards.types";
-import { useGroupsStore } from "@/stores/groups";
+import { useGroupsStore } from "@/groups/store";
 
 import WLBaseLayout from "@/layouts/WLBaseLayout.vue";
 import WLActionCardList from "@/components/WLActionCardList.vue";
-import WLCreateGroup from "@/components/groups/partials/WLCreateGroup.vue";
-import WLJoinGroup from "@/components/groups/partials/WLJoinGroup.vue";
-import WLInvite from "@/components/groups/partials/WLInvite.vue";
-import WLManageGroups from "@/components/groups/partials/WLManageGroups.vue";
+import WLCreateGroup from "@/groups/views/partials/WLCreateGroup.vue";
+import WLJoinGroup from "@/groups/views/partials/WLJoinGroup.vue";
+import WLInvite from "@/groups/views/partials/WLInvite.vue";
+import WLManageGroups from "@/groups/views/partials/WLManageGroups.vue";
 
 const {
   groupsActions,
