@@ -29,6 +29,7 @@ export const initializeStateGroups: Function = async (
     setGroupsInitialized: Function;
   } = useUserStore();
 
+  // TODO: if groups are initialized, return the state groups instead
   if (loggedUser.value && loggedUser.value.uid) {
     const userGroups: Array<WLUserGroup> = await fetchUserGroups(
       loggedUser.value.uid,

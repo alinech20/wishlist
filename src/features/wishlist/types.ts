@@ -11,6 +11,7 @@ export type WLWishlist = {
   name: string;
   description: string;
   groups?: Array<string>;
+  itemList?: Array<WLItem>;
   createdOn?: string;
   modifiedOn?: string;
 };

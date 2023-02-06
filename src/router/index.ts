@@ -14,6 +14,7 @@ import GroupsManageView from "@/features/groups/views/partials/WLManageGroups.vu
 import WishlistView from "@/features/wishlist/views/WLWishlist.vue";
 import WishlistDashboardView from "@/features/wishlist/views/partials/WLWishlistDashboard.vue";
 import WishlistCreateView from "@/features/wishlist/views/partials/WLWishlistCreate.vue";
+import WishlistAddItemView from "@/features/wishlist/views/partials/WLWishlistAddItem.vue";
 import WishlistShareView from "@/features/wishlist/views/partials/WLWishlistShare.vue";
 import WishlistManageView from "@/features/wishlist/views/partials/WLWishlistManage.vue";
 
@@ -85,6 +86,11 @@ const router = createRouter({
           path: "create",
           name: "Create Wishlist",
           component: WishlistCreateView,
+        },
+        {
+          path: "add-item/:id",
+          name: "Add Item",
+          component: WishlistAddItemView,
         },
         {
           path: "share",

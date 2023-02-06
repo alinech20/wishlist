@@ -6,7 +6,7 @@
 
 <script setup lang="ts">
 import { markRaw } from "vue";
-import { useRouter } from "vue-router";
+import { useRouter, type Router } from "vue-router";
 
 import WLBaseLayout from "@/layouts/WLBaseLayout.vue";
 import WLActionCardList from "@/components/WLActionCardList.vue";
@@ -15,8 +15,9 @@ import type { ActionCard } from "@/types/action-cards.types";
 
 import { CreateGroupIcon, WishlistIcon } from "@/components/ui/icons";
 
-const router = useRouter();
+const router: Router = useRouter();
 
+// action cards on the home page
 const dashboardActions: Array<ActionCard> = [
   {
     icon: markRaw(CreateGroupIcon),

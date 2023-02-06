@@ -9,6 +9,7 @@
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
 import type { Ref } from "vue";
+import { useRouter } from "vue-router";
 
 import { getISOFormattedCurrentDateTime } from "@/helpers/date";
 
@@ -58,6 +59,8 @@ const createWishlistForm: WLForm = {
   ] as Array<WLButton>,
 };
 
+const router = useRouter();
+
 async function createNewWishlist(
   values: WLWishlist,
   { resetForm }: { resetForm: Function }
@@ -77,7 +80,13 @@ async function createNewWishlist(
   newWishlist.modifiedOn = newWishlist.createdOn;
 
   const { createWishlist }: { createWishlist: Function } = useWishlistStore();
-  await createWishlist(newWishlist);
+  const wishlistId: string = await createWishlist(newWishlist);
+
+  router.push({
+    name: "Add Item",
+    params: {
+      id: wishlistId,
+    },
+  });
 }
-// TODO: redirect to add items after created
 </script>

@@ -10,13 +10,22 @@ import type {
 import { useAuthStore } from "@/features/auth/store";
 
 export const useUserStore = defineStore("user", () => {
+  // #region Logged user data
+  // bringing the logged user data from the auth store
   const { loggedUser }: { loggedUser: Ref<WLUser> } = storeToRefs(
     useAuthStore()
   );
   const user = ref<WLUser>(loggedUser.value);
+  // #endregion
 
+  // #region User's groups data and setter
   // all user groups
   const groups = reactive<Array<WLUserGroup>>([]);
+
+  // state group's status
+  const groupsInitialized = ref<boolean>(false);
+  const setGroupsInitialized: Function = (v: boolean): boolean =>
+    (groupsInitialized.value = v);
 
   /**
    * Setter for the groups
@@ -31,6 +40,7 @@ export const useUserStore = defineStore("user", () => {
 
     return groups;
   };
+  // #endregion
 
   /**
    * Updates user's relation with a group
@@ -59,16 +69,14 @@ export const useUserStore = defineStore("user", () => {
     return groups;
   };
 
-  const groupsInitialized = ref<boolean>(false);
-  const setGroupsInitialized: Function = (v: boolean): boolean =>
-    (groupsInitialized.value = v);
-
+  // #region All the user's info (user data and groups)
   const userData = reactive({
     user,
     groups,
   });
 
   const getUserData = computed(() => userData);
+  // #endregion
 
   return {
     groups,
