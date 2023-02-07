@@ -98,7 +98,8 @@ export const useWishlistStore = defineStore("wishlist", () => {
 
   // #region Wishlists actions that only affect the state (no db actions)
   const setWishlists: Function = (wl: Array<WLWishlist>): Array<WLWishlist> => {
-    for (const wishlist of wl) wishlists.push(wishlist);
+    if (wishlists.length === 0 && wl.length > 0)
+      for (const wishlist of wl) wishlists.push(wishlist);
     return wishlists;
   };
   // #endregion
