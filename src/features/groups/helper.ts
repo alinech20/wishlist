@@ -12,11 +12,13 @@ import type { Ref } from "vue";
 export const initializeStateGroups: Function = async (
   status?: WLGroupMembershipStatus
 ): Promise<Array<WLUserGroup> | undefined> => {
+  const userStore = useUserStore();
+
   const {
     groups,
     groupsInitialized,
   }: { groups: Ref<Array<WLUserGroup>>; groupsInitialized: Ref<boolean> } =
-    storeToRefs(useUserStore());
+    storeToRefs(userStore);
 
   const { loggedUser }: { loggedUser: Ref<WLUser> } = storeToRefs(
     useAuthStore()
@@ -30,7 +32,7 @@ export const initializeStateGroups: Function = async (
   }: {
     setGroups: Function;
     setGroupsInitialized: Function;
-  } = useUserStore();
+  } = userStore;
 
   if (loggedUser.value && loggedUser.value.uid) {
     if (groupsInitialized.value) {

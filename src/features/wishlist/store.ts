@@ -1,4 +1,4 @@
-import { computed, reactive } from "vue";
+import { computed, reactive, ref } from "vue";
 import { defineStore } from "pinia";
 
 import type { WLItem, WLWishlist } from "@/features/wishlist/types";
@@ -6,6 +6,10 @@ import type { WLItem, WLWishlist } from "@/features/wishlist/types";
 import {
   addDoc,
   collection,
+  getDocs,
+  query,
+  QuerySnapshot,
+  where,
   type DocumentData,
   type DocumentReference,
 } from "firebase/firestore";
@@ -46,9 +50,9 @@ export const useWishlistStore = defineStore("wishlist", () => {
   // );
   // // #endregion
 
+  // #region Wishlist state and getters
   const wishlists = reactive<Array<WLWishlist>>([]);
 
-  // #region Wishlist getters
   const getWishlistById = computed<(id: string) => WLWishlist | undefined>(
     () =>
       (id: string): WLWishlist | undefined =>
@@ -62,6 +66,47 @@ export const useWishlistStore = defineStore("wishlist", () => {
       (w: WLWishlist): Array<WLItem> | undefined =>
         w.itemList
   );
+
+  const getWishlistItemById = computed<
+    (w: WLWishlist, iid: string) => WLItem | undefined
+  >(
+    () =>
+      (w: WLWishlist, iid: string): WLItem | undefined =>
+        w.itemList && w.itemList.length > 0
+          ? w.itemList?.find((i) => i.id === iid)
+          : undefined
+  );
+
+  const getWishlistItemByIndex = computed<
+    (w: WLWishlist, ii: number) => WLItem | undefined
+  >(
+    () =>
+      (w: WLWishlist, ii: number): WLItem | undefined =>
+        w.itemList && w.itemList.length > 0 ? w.itemList[ii] : undefined
+  );
+
+  const getWishlistItemIndexById = computed<
+    (w: WLWishlist, iid: string) => number | undefined
+  >(
+    () =>
+      (w: WLWishlist, iid: string): number | undefined =>
+        w.itemList && w.itemList.length > 0
+          ? w.itemList.findIndex((i) => i.id === iid)
+          : undefined
+  );
+  // #endregion
+
+  // #region Wishlists actions that only affect the state (no db actions)
+  const setWishlists: Function = (wl: Array<WLWishlist>): Array<WLWishlist> => {
+    for (const wishlist of wl) wishlists.push(wishlist);
+    return wishlists;
+  };
+  // #endregion
+
+  // #region Tracking if the wishlists have been initialized
+  const wishlistsInitialized = ref<boolean>(false);
+  const setWishlistsInitialized: Function = (v: boolean): boolean =>
+    (wishlistsInitialized.value = v);
   // #endregion
 
   // #region Importing some helpful stuff from the form store
@@ -138,7 +183,6 @@ export const useWishlistStore = defineStore("wishlist", () => {
     wid: string
   ): Promise<WLItem | undefined> => {
     showFormMessage("Adding item to wishlist...");
-    // TODO: check the if it gets added to store
     try {
       const newItem: DocumentReference<DocumentData> = await addDoc(
         collection(db, "wishlists", wid, "wishlist_items"),
@@ -163,12 +207,58 @@ export const useWishlistStore = defineStore("wishlist", () => {
       hideFormMessage();
     }
   };
+
+  const fetchUserWishlists: Function = async (
+    uid: string
+  ): Promise<Array<WLWishlist> | undefined> => {
+    try {
+      const userWishlists: QuerySnapshot<DocumentData> = await getDocs(
+        query(collection(db, "wishlists"), where("uid", "==", uid))
+      );
+
+      await Promise.all(
+        userWishlists.docs.map(async (d) => {
+          const docData: DocumentData = d.data();
+
+          const items: QuerySnapshot<DocumentData> = await getDocs(
+            collection(db, "wishlists", d.id, "wishlist_items")
+          );
+
+          const wl: WLWishlist = {
+            id: d.id,
+            itemList: [] as Array<WLItem>,
+            ...docData,
+          } as WLWishlist;
+
+          items.docs.forEach((document) => {
+            wl.itemList?.push({
+              id: document.id,
+              ...document.data(),
+            } as WLItem);
+          });
+
+          wishlists.push(wl);
+        })
+      );
+
+      setWishlistsInitialized(true);
+
+      return wishlists;
+    } catch (e: any) {
+      console.error(e);
+    }
+  };
   // #endregion
 
   /** Item list logic end */
 
   return {
+    wishlists,
     createWishlist,
     addItemToWishlist,
+    setWishlists,
+    wishlistsInitialized,
+    setWishlistsInitialized,
+    fetchUserWishlists,
   };
 });

@@ -34,10 +34,7 @@ export const useUserStore = defineStore("user", () => {
    * @returns { Array<WLUserGroup> } End result
    */
   const setGroups: Function = (ug: Array<WLUserGroup>): Array<WLUserGroup> => {
-    for (const group of ug) {
-      groups.push(group);
-    }
-
+    for (const group of ug) groups.push(group);
     return groups;
   };
   // #endregion
