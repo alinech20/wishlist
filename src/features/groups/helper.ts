@@ -12,7 +12,10 @@ import type { Ref } from "vue";
 export const initializeStateGroups: Function = async (
   status?: WLGroupMembershipStatus
 ): Promise<Array<WLUserGroup> | undefined> => {
-  const { groupsInitialized }: { groupsInitialized: Ref<boolean> } =
+  const {
+    groups,
+    groupsInitialized,
+  }: { groups: Ref<Array<WLUserGroup>>; groupsInitialized: Ref<boolean> } =
     storeToRefs(useUserStore());
 
   const { loggedUser }: { loggedUser: Ref<WLUser> } = storeToRefs(
@@ -29,18 +32,22 @@ export const initializeStateGroups: Function = async (
     setGroupsInitialized: Function;
   } = useUserStore();
 
-  // TODO: if groups are initialized, return the state groups instead
   if (loggedUser.value && loggedUser.value.uid) {
-    const userGroups: Array<WLUserGroup> = await fetchUserGroups(
-      loggedUser.value.uid,
-      status
-    );
+    if (groupsInitialized.value) {
+      if (!status) return groups.value;
+      else if (status) return groups.value.filter((g) => g.status === status);
+    } else {
+      const userGroups: Array<WLUserGroup> = await fetchUserGroups(
+        loggedUser.value.uid
+      );
 
-    if (userGroups && !groupsInitialized.value && !status) {
-      setGroups(userGroups);
-      setGroupsInitialized(true);
+      if (userGroups) {
+        setGroups(userGroups);
+        setGroupsInitialized(true);
+      }
+
+      if (!status) return userGroups;
+      else return userGroups.filter((g) => g.status === status);
     }
-
-    return userGroups;
   }
 };
