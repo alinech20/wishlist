@@ -1,8 +1,8 @@
 export type WLItem = {
   id?: string;
   name: string;
-  url: string;
-  comment: string;
+  url?: string;
+  comment?: string;
 };
 
 export type WLWishlist = {

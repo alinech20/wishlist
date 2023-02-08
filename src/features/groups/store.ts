@@ -73,7 +73,6 @@ export const useGroupsStore = defineStore("groups", () => {
       });
 
       hideFormMessage();
-      return undefined;
     }
   };
 

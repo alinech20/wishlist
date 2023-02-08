@@ -1,23 +1,46 @@
 <template>
-  <WLGenericForm
-    class="wl-form--fields-flex-column"
-    v-bind="wishlistForm"
-    @submitForm="addToWishlist"
-  ></WLGenericForm>
+  <article class="wl-add-item">
+    <section class="wl-add-item__form">
+      <WLGenericForm
+        class="wl-form--fields-flex-column"
+        v-bind="wishlistForm"
+        @submitForm="addToWishlist"
+      ></WLGenericForm>
+    </section>
+    <WLItemList :items="wishlistItems"></WLItemList>
+  </article>
 </template>
 
 <script setup lang="ts">
+// TODO: sort items in list by date (new first?)
+import { useRoute } from "vue-router";
+
 import { useWishlistStore } from "@/features/wishlist/store";
 
 import WLGenericForm from "@/components/WLGenericForm.vue";
+import WLItemList from "@/features/wishlist/components/WLItemList.vue";
 
 import type { WLButton, WLField, WLForm } from "@/types/forms.types";
 import type { WLItem } from "@/features/wishlist/types";
-import { useRoute } from "vue-router";
+import { computed } from "vue";
 
 // #region Route params
 const wishlistId = useRoute().params.id;
 // #endregion
+
+const {
+  getWishlistById,
+  getWishlistItems,
+}: {
+  getWishlistById: Function;
+  getWishlistItems: Function;
+} = useWishlistStore();
+
+const wishlistItems = computed<Array<WLItem>>((): Array<WLItem> => {
+  const wish = getWishlistById(wishlistId);
+  if (wish) return getWishlistItems(wish);
+  else return [];
+});
 
 // #region Wishlist form
 /**
@@ -108,5 +131,5 @@ function addToWishlist(
 </script>
 
 <style lang="scss">
-@use "@/assets/styles/views/wl-wishlist.scss";
+@use "@/features/wishlist/assets/styles/partials/wl-add-item.scss";
 </style>

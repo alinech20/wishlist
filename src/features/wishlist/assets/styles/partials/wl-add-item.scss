@@ -1,0 +1,22 @@
+@use "/src/assets/styles/_vars/spacers";
+
+.wl-add-item {
+  #AddToWishlist {
+    width: 80%;
+    margin: 0 auto;
+
+    .wl-form__fields {
+      .wl-input-wrapper {
+        .wl-input-label {
+          display: block;
+          text-align: left;
+        }
+
+        .wl-input {
+          width: 100%;
+          box-sizing: border-box;
+        }
+      }
+    }
+  }
+}

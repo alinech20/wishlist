@@ -1,0 +1,14 @@
+@use "/src/assets/styles/_vars/borders";
+@use "/src/assets/styles/_vars/colors";
+@use "/src/assets/styles/_vars/shadows";
+@use "/src/assets/styles/_vars/spacers";
+
+.wl-item {
+  background-image: colors.$ItemGradient;
+  border-radius: borders.$BorderRadiusStandard;
+  box-shadow: shadows.$ItemShadow;
+  color: colors.$Background;
+  padding: spacers.$SmallerSpacer spacers.$SmallSpacer;
+  text-align: left;
+  margin: spacers.$SmallerSpacer 0;
+}

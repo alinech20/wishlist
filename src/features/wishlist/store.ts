@@ -53,19 +53,15 @@ export const useWishlistStore = defineStore("wishlist", () => {
   // #region Wishlist state and getters
   const wishlists = reactive<Array<WLWishlist>>([]);
 
-  const getWishlistById = computed<(id: string) => WLWishlist | undefined>(
-    () =>
-      (id: string): WLWishlist | undefined =>
-        wishlists.find((w) => w.id === id)
-  );
+  const getWishlistById: Function = (id: string): WLWishlist | undefined =>
+    wishlists.find((w) => w.id === id);
 
   const getWishlistItems = computed<
     (w: WLWishlist) => Array<WLItem> | undefined
-  >(
-    () =>
-      (w: WLWishlist): Array<WLItem> | undefined =>
-        w.itemList
-  );
+  >(() => (w: WLWishlist): Array<WLItem> | undefined => {
+    console.log(w.itemList);
+    return w.itemList;
+  });
 
   const getWishlistItemById = computed<
     (w: WLWishlist, iid: string) => WLItem | undefined
@@ -142,7 +138,7 @@ export const useWishlistStore = defineStore("wishlist", () => {
   // #region Actions that work with the database, not just the app's state
   const createWishlist: Function = async (
     w: WLWishlist
-  ): Promise<string | null> => {
+  ): Promise<string | undefined> => {
     showFormMessage("Your wishlist is being created...");
 
     try {
@@ -156,9 +152,10 @@ export const useWishlistStore = defineStore("wishlist", () => {
         message: "Wishlist successfully created!",
       });
 
+      hideFormMessage();
+
       newWishlist && wishlists.push(w);
 
-      hideFormMessage();
       return newWishlist.id;
     } catch (e: any) {
       setFormProcessingMessage({
@@ -167,7 +164,6 @@ export const useWishlistStore = defineStore("wishlist", () => {
       });
 
       hideFormMessage();
-      return null;
     }
   };
 
@@ -195,8 +191,10 @@ export const useWishlistStore = defineStore("wishlist", () => {
         message: "Successfully added the item!",
       });
 
+      hideFormMessage();
+
       i.id = newItem.id;
-      getWishlistById.value(wid)?.itemList?.push(i);
+      getWishlistById(wid).itemList?.push(i);
 
       return i;
     } catch (e: any) {
@@ -256,6 +254,8 @@ export const useWishlistStore = defineStore("wishlist", () => {
   return {
     wishlists,
     createWishlist,
+    getWishlistById,
+    getWishlistItems,
     addItemToWishlist,
     setWishlists,
     wishlistsInitialized,

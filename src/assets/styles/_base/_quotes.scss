@@ -2,10 +2,12 @@
 @use "../_vars/colors";
 @use "../_vars/spacers";
 
-.quote {
-  background-color: colors.$Primary;
+.wl-quote {
+  background-color: colors.$Secondary;
   border-left: borders.$QuoteBorderStandard;
+  border-radius: borders.$BorderRadiusStandard;
   color: colors.$Background;
   margin: 0;
   padding: spacers.$SmallerSpacer spacers.$SmallSpacer;
+  text-align: left;
 }
