@@ -64,8 +64,7 @@ const {
  *
  * @param { string } id Group's id
  * @param { Function } resetForm Function to reset the form
- *
- * Returns true or false depending if the operation it was successful or not
+ * @returns { boolean } True or false depending if the operation it was successful or not
  */
 async function joinExistingGroup(
   { id }: { id: string },

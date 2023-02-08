@@ -3,6 +3,8 @@ export type WLItem = {
   name: string;
   url?: string;
   comment?: string;
+  createdOn: string;
+  modifiedOn: string;
 };
 
 export type WLWishlist = {

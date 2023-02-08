@@ -17,6 +17,7 @@ import {
 
 const router = useRouter();
 
+// #region Buttons to show on the wishlist dashboard
 const wishlistActions: Array<ActionCard> = [
   {
     icon: markRaw(CreateWishlistIcon),
@@ -34,4 +35,5 @@ const wishlistActions: Array<ActionCard> = [
     action: () => router.push({ name: "Manage Wishlists" }),
   },
 ];
+// #endregion
 </script>

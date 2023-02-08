@@ -12,17 +12,17 @@
 </template>
 
 <script setup lang="ts">
-// TODO: sort items in list by date (new first?)
 import { useRoute } from "vue-router";
+import { computed } from "vue";
 
+import { getISOFormattedCurrentDateTime } from "@/helpers/date";
 import { useWishlistStore } from "@/features/wishlist/store";
 
 import WLGenericForm from "@/components/WLGenericForm.vue";
 import WLItemList from "@/features/wishlist/components/WLItemList.vue";
 
 import type { WLButton, WLField, WLForm } from "@/types/forms.types";
-import type { WLItem } from "@/features/wishlist/types";
-import { computed } from "vue";
+import type { WLItem, WLWishlist } from "@/features/wishlist/types";
 
 // #region Route params
 const wishlistId = useRoute().params.id;
@@ -30,17 +30,19 @@ const wishlistId = useRoute().params.id;
 
 const {
   getWishlistById,
-  getWishlistItems,
+  getWishlistItemsSortedByDate,
 }: {
   getWishlistById: Function;
-  getWishlistItems: Function;
+  getWishlistItemsSortedByDate: Function;
 } = useWishlistStore();
 
+// #region Getter for sorted wishlist items
 const wishlistItems = computed<Array<WLItem>>((): Array<WLItem> => {
-  const wish = getWishlistById(wishlistId);
-  if (wish) return getWishlistItems(wish);
+  const wish: WLWishlist = getWishlistById(wishlistId);
+  if (wish) return getWishlistItemsSortedByDate(wish.itemList, -1);
   else return [];
 });
+// #region
 
 // #region Wishlist form
 /**
@@ -112,14 +114,15 @@ const wishlistForm: WLForm = {
  * @param {WLItem} values Item to add to list
  * @param {Function} resetForm Function to reset form
  *      (destructured from VeeValidate param on submit)
- *
- * Returns the added item
+ * @returns { WLItem } The added item
  */
 function addToWishlist(
   values: WLItem,
   { resetForm }: { resetForm: Function }
 ): WLItem {
   const newItem: WLItem = { ...values } as WLItem;
+  newItem.createdOn = getISOFormattedCurrentDateTime();
+  newItem.modifiedOn = newItem.createdOn;
   resetForm();
 
   const { addItemToWishlist }: { addItemToWishlist: Function } =

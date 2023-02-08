@@ -48,7 +48,14 @@ const { groups }: { groups: Ref<Array<WLUserGroup>> } = storeToRefs(
   useUserStore()
 );
 
-const filterGroups = computed<
+// #region Groups filtering getters
+/**
+ * Gets the groups based on the user's membership status
+ *
+ * @param { WLGroupMembershipStatus } status Status to filter by
+ * @returns { Array<WLUserGroup> } Filtered groups
+ */
+const getGroupsFilteredByUserStatus = computed<
   (status: WLGroupMembershipStatus) => Array<WLUserGroup>
 >(
   () =>
@@ -56,17 +63,27 @@ const filterGroups = computed<
       groups.value.filter((g) => g.status === status)
 );
 
+/**
+ * Gets the groups where the user's an accepted member
+ */
 const accepted = computed(() =>
-  filterGroups.value(WLGroupMembershipStatus.ACCEPTED)
+  getGroupsFilteredByUserStatus.value(WLGroupMembershipStatus.ACCEPTED)
 );
 
+/**
+ * Gets the groups where the user's been invited to be a part of
+ */
 const invitations = computed(() =>
-  filterGroups.value(WLGroupMembershipStatus.INVITED)
+  getGroupsFilteredByUserStatus.value(WLGroupMembershipStatus.INVITED)
 );
 
+/**
+ * Gets the groups where the user sent a join request
+ */
 const requested = computed(() =>
-  filterGroups.value(WLGroupMembershipStatus.REQUESTED)
+  getGroupsFilteredByUserStatus.value(WLGroupMembershipStatus.REQUESTED)
 );
+// #endregion
 
 onBeforeMount(async () => await initializeStateGroups());
 </script>

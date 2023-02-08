@@ -53,14 +53,42 @@ export const useWishlistStore = defineStore("wishlist", () => {
   // #region Wishlist state and getters
   const wishlists = reactive<Array<WLWishlist>>([]);
 
+  /**
+   * Gets the wishlist by its id
+   *
+   * @param { string } id Wishlist id
+   * @returns { WLWishlist } Wishlist
+   */
   const getWishlistById: Function = (id: string): WLWishlist | undefined =>
     wishlists.find((w) => w.id === id);
 
+  /**
+   * Gets the items in a wishlist
+   *
+   * @param { WLWishlist } w Wishlist
+   * @returns { Array<WLItem> } Array of items in the wishlist
+   */
   const getWishlistItems = computed<
     (w: WLWishlist) => Array<WLItem> | undefined
   >(() => (w: WLWishlist): Array<WLItem> | undefined => {
-    console.log(w.itemList);
     return w.itemList;
+  });
+
+  /**
+   * Sorts the items in the wishlist by date.
+   *
+   * @param { Array<WLItem> } items Array to sort by date
+   * @param { -1 | 0 | 1 } order Dictates the order (-1 is descending, 1 is ascending)
+   * @returns { Array<WLItem> } A sorted copy of the array
+   */
+  const getWishlistItemsSortedByDate = computed<
+    (items: Array<WLItem>, order: -1 | 0 | 1) => Array<WLItem>
+  >(() => (items: Array<WLItem>, order: -1 | 0 | 1 = 1): Array<WLItem> => {
+    const arr = [...items];
+
+    return order === 0
+      ? arr
+      : arr.sort((a, b) => order * a.createdOn.localeCompare(b.createdOn));
   });
 
   const getWishlistItemById = computed<
@@ -93,6 +121,12 @@ export const useWishlistStore = defineStore("wishlist", () => {
   // #endregion
 
   // #region Wishlists actions that only affect the state (no db actions)
+  /**
+   * Sets the state wishlists
+   *
+   * @param { Array<WLWishlist> } wl Array of wishlists
+   * @returns { Array<WLWishlist> } Array of wishlists from state
+   */
   const setWishlists: Function = (wl: Array<WLWishlist>): Array<WLWishlist> => {
     if (wishlists.length === 0 && wl.length > 0)
       for (const wishlist of wl) wishlists.push(wishlist);
@@ -136,6 +170,12 @@ export const useWishlistStore = defineStore("wishlist", () => {
   // #endregion
 
   // #region Actions that work with the database, not just the app's state
+  /**
+   * Adds a wishlist to state and db
+   *
+   * @param { WLWishlist } w Wishlist to add
+   * @returns { string } Id of the newly created wishlist
+   */
   const createWishlist: Function = async (
     w: WLWishlist
   ): Promise<string | undefined> => {
@@ -172,8 +212,7 @@ export const useWishlistStore = defineStore("wishlist", () => {
    *
    * @param { WLItem } i Item to add to the list and db (has no id)
    * @param { string } wid Wishlist id
-   *
-   * Returns the item with the id from the db
+   * @returns { WLItem } The item with the id from the db
    */
   const addItemToWishlist: Function = async (
     i: WLItem,
@@ -207,6 +246,12 @@ export const useWishlistStore = defineStore("wishlist", () => {
     }
   };
 
+  /**
+   * Gets the user's wishlists from the db
+   *
+   * @param { string } uid Id of the user
+   * @returns { Array<WLWishlist> } User's wishlists
+   */
   const fetchUserWishlists: Function = async (
     uid: string
   ): Promise<Array<WLWishlist> | undefined> => {
@@ -256,6 +301,7 @@ export const useWishlistStore = defineStore("wishlist", () => {
     createWishlist,
     getWishlistById,
     getWishlistItems,
+    getWishlistItemsSortedByDate,
     addItemToWishlist,
     setWishlists,
     wishlistsInitialized,

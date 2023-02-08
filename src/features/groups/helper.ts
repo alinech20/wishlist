@@ -9,6 +9,12 @@ import type {
 import { storeToRefs } from "pinia";
 import type { Ref } from "vue";
 
+/**
+ * Initializes the groups in the store's state
+ *
+ * @param { WLGroupMembershipStatus } status (Optional) Status to filter by
+ * @returns { Array<WLUserGroup> } Array with the groups
+ */
 export const initializeStateGroups: Function = async (
   status?: WLGroupMembershipStatus
 ): Promise<Array<WLUserGroup> | undefined> => {
@@ -35,15 +41,18 @@ export const initializeStateGroups: Function = async (
   } = userStore;
 
   if (loggedUser.value && loggedUser.value.uid) {
+    // if the state's already initialized, return from state
     if (groupsInitialized.value) {
       if (!status) return groups.value;
       else if (status) return groups.value.filter((g) => g.status === status);
     } else {
+      // else get them from the db
       const userGroups: Array<WLUserGroup> = await fetchUserGroups(
         loggedUser.value.uid
       );
 
       if (userGroups) {
+        // add them to state
         setGroups(userGroups);
         setGroupsInitialized(true);
       }

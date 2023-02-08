@@ -18,6 +18,7 @@ import {
 
 const router = useRouter();
 
+// #region Buttons in the Groups Dashboard
 const groupsActions: Array<ActionCard> = [
   {
     icon: markRaw(CreateGroupIcon),
@@ -40,4 +41,5 @@ const groupsActions: Array<ActionCard> = [
     action: () => router.push({ name: "Manage Groups" }),
   },
 ];
+// #endregion
 </script>

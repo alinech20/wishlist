@@ -21,6 +21,7 @@ import type { WLUser } from "@/features/auth/types";
 import type { WLWishlist } from "@/features/wishlist/types";
 import type { WLForm, WLButton, WLField } from "@/types/forms.types";
 
+// #region Create a wishlist form
 const createWishlistForm: WLForm = {
   id: "CreateWishlist",
   title: "Create a wishlist",
@@ -58,9 +59,17 @@ const createWishlistForm: WLForm = {
     } as WLButton,
   ] as Array<WLButton>,
 };
+// #endregion
 
 const router = useRouter();
 
+// #region Handle the creation of a new wishlist
+/**
+ * Creates a new wishlist and adds it to state and db
+ *
+ * @param { WLWishlist } values Wishlist to add to the db
+ * @param { Function } resetForm Function to reset the form
+ */
 async function createNewWishlist(
   values: WLWishlist,
   { resetForm }: { resetForm: Function }
@@ -89,4 +98,5 @@ async function createNewWishlist(
     },
   });
 }
+// #endregion
 </script>

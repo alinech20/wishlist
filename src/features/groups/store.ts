@@ -49,6 +49,7 @@ export const useGroupsStore = defineStore("groups", () => {
    * Fetches a group from the db by its id
    *
    * @param { string } id Id of the group
+   * @returns { DocumentData | undefined } Group entry
    */
   const getGroupById: Function = async (
     id: string
@@ -81,9 +82,7 @@ export const useGroupsStore = defineStore("groups", () => {
    *
    * @param { string } uid The user's id
    * @param { string } gid The group's id
-   *
-   * Returns true or false depending if the user's in the group or not
-   * Can also return undefined in case it errors
+   * @returns { boolean | undefined } True or false depending if the user's in the group or not
    */
   const isUserInGroup: Function = async (
     uid: string,
@@ -122,8 +121,7 @@ export const useGroupsStore = defineStore("groups", () => {
    * Creates a new group
    *
    * @param { WLGroup } g Data for the group to be created
-   *
-   * Returns the id of the newly created group or null
+   * @returns { string | null } The id of the newly created group or null
    */
   const createGroup: Function = async (g: WLGroup): Promise<string | null> => {
     showFormMessage("Your group is being created...");
@@ -190,8 +188,7 @@ export const useGroupsStore = defineStore("groups", () => {
    * Adds a user to a group
    *
    * @param { Object } data Object with the data needed to add to db
-   *
-   * Returns true or false depending if the operation was successful or not
+   * @returns { boolean } True or false depending if the operation was successful or not
    */
   const addUserToGroup: Function = async (data: any): Promise<boolean> => {
     showFormMessage("Joining the group...");
@@ -224,7 +221,6 @@ export const useGroupsStore = defineStore("groups", () => {
    *
    * @param { string } uid User id
    * @param { string } status Membership status (used to filter the groups)
-   *
    * @returns { Promise<Array<WLUserGroup>> } Array of groups
    */
   const fetchUserGroups: Function = async (
@@ -323,7 +319,6 @@ export const useGroupsStore = defineStore("groups", () => {
    *
    * @param { string } uid User's id
    * @param { string } gid Group's id
-   *
    * @returns { DocumentReference } Matching document
    */
   const fetchUserGroupRelation: Function = async (
@@ -355,7 +350,7 @@ export const useGroupsStore = defineStore("groups", () => {
   const updateStateGroupStatus: Function = (
     gid: string,
     status: WLGroupMembershipStatus
-  ) => {
+  ): void => {
     const { updateGroupStatus }: { updateGroupStatus: Function } =
       useUserStore();
 
@@ -368,8 +363,6 @@ export const useGroupsStore = defineStore("groups", () => {
    * @param { WLGroupMembershipStatus } status The new status
    * @param { string } uid User's id
    * @param { string } gid Group's id
-   *
-   * @returns void
    */
   const updateUserGroupRelation: Function = async (
     status: WLGroupMembershipStatus,

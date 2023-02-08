@@ -26,24 +26,13 @@ import type { WLForm } from "@/types/forms.types";
 
 import { useAuthStore } from "@/features/auth/store";
 
-// #region Auth form content
-/**
- * authForm contains the info and elements of the form
- * To change the validation schema, also check the helpers/validators.ts
- * To change the fields/buttons, just alter the arrays containing them
- */
-
-// #endregion
-
-// #start region Form tabs logic
-
+// #region Form tabs logic
 const activeTab = ref<string>(AuthTab.LOGIN.toLowerCase());
 const switchTab: Function = (to: AuthTab): string => {
   activeTab.value = to.toLowerCase();
   // tabSet.tabs.forEach((i) => (i.active = activeTab.value === i.location));
   return activeTab.value;
 };
-
 // #endregion
 
 // getting the functions we need from the store

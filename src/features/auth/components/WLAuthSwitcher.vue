@@ -1,10 +1,10 @@
 <template>
   <article class="auth-form--switcher">
     <p class="paragraph paragraph--s switch-to--register">
-      {{ questionText }}
+      {{ getQuestionText }}
       <strong
         ><a class="wl-link" @click="switchTab(switchTo as AuthTab)">{{
-          linkText
+          getLinkText
         }}</a></strong
       >
     </p>
@@ -13,7 +13,7 @@
 
 <script setup lang="ts">
 import { AuthTab } from "@/features/auth/types";
-import { type ComputedRef, computed } from "vue";
+import { computed } from "vue";
 
 const props = defineProps<{
   activeTab: string;
@@ -21,13 +21,15 @@ const props = defineProps<{
   switchTab: Function;
 }>();
 
-const questionText: ComputedRef<string> = computed((): string =>
+// #region Getters for the question text and link
+const getQuestionText = computed<string>((): string =>
   props.activeTab === AuthTab.LOGIN.toLowerCase()
     ? "Don't have an account?"
     : "Already registered?"
 );
 
-const linkText: ComputedRef<string> = computed((): string =>
+const getLinkText = computed<string>((): string =>
   props.activeTab === AuthTab.LOGIN.toLowerCase() ? "Sign up!" : "Sign in!"
 );
+// #endregion
 </script>

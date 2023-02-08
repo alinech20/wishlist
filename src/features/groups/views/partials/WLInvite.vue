@@ -94,6 +94,9 @@ const inviteForm = reactive<WLForm>({
 });
 // #endregion
 
+/**
+ * Gets the groups the user's a member of
+ */
 onBeforeMount(
   async () =>
     (acceptedGroups.value = await initializeStateGroups(

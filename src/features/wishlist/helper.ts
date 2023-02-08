@@ -6,6 +6,12 @@ import { useAuthStore } from "@/features/auth/store";
 import type { WLWishlist } from "@/features/wishlist/types";
 import type { WLUser } from "@/features/auth/types";
 
+// #region Initializer for the state's wishlist
+/**
+ * Gets the available wishlists of the logged user
+ *
+ * @returns { Array<WLWishlist> } Array with the wishlists
+ */
 export const initializeStateWishlists: Function = async (): Promise<
   Array<WLWishlist> | undefined
 > => {
@@ -30,8 +36,10 @@ export const initializeStateWishlists: Function = async (): Promise<
   } = wishlistStore;
 
   if (loggedUser.value && loggedUser.value.uid) {
+    // if state is already initialized, return from state
     if (wishlistsInitialized.value) return wishlists.value;
     else {
+      // else fetch from db
       const userWishlists: Array<WLWishlist> = await fetchUserWishlists(
         loggedUser.value.uid
       );
@@ -40,3 +48,4 @@ export const initializeStateWishlists: Function = async (): Promise<
     }
   }
 };
+// #endregion

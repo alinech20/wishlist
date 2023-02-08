@@ -7,14 +7,25 @@ import { useRouter } from "vue-router";
 export const useMenuStore = defineStore("menu", () => {
   const router = useRouter();
 
+  // #region Active route logic (state & setter)
   const activeRoute = ref<string>(router.currentRoute.value.name as string);
   const setActiveRoute: Function = (v: string): string =>
     (activeRoute.value = v);
+  // #endregion
 
+  // #region Menu display logic (state & toggler)
   const showMenu = ref<boolean>(false);
   const toggleMenu: Function = (): boolean =>
     (showMenu.value = !showMenu.value);
+  // #endregion
 
+  // #region Menu items and navigation logic
+  /**
+   * Navigates to the path
+   *
+   * @param { string } path The new path
+   * @param { string } name Name of the route
+   */
   const navigateTo: Function = (path: string, name: string): void => {
     setActiveRoute(name);
     toggleMenu();
@@ -44,6 +55,7 @@ export const useMenuStore = defineStore("menu", () => {
       },
     ] as Array<Tab>,
   });
+  // #endregion
 
   return {
     mainMenuItems,

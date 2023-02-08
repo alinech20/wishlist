@@ -62,6 +62,12 @@ const props: WLUserGroup = defineProps<{
   };
 }>();
 
+// #region Handlers for cards' buttons
+/**
+ * Accepts or declines an invite
+ *
+ * @param { boolean } v Is true if accepting the invite, false if declining
+ */
 const handleInvite: Function = async (v: boolean): Promise<void> => {
   const status: WLGroupMembershipStatus = v
     ? WLGroupMembershipStatus.ACCEPTED
@@ -80,6 +86,9 @@ const handleInvite: Function = async (v: boolean): Promise<void> => {
   );
 };
 
+/**
+ * Cancels a join request sent to a group
+ */
 const cancelRequest: Function = async (): Promise<void> => {
   const { updateUserGroupRelation }: { updateUserGroupRelation: Function } =
     useGroupsStore();
@@ -93,7 +102,9 @@ const cancelRequest: Function = async (): Promise<void> => {
     props.group.id
   );
 };
+// #endregion
 
+// #region Buttons for invitations
 const invitationActions: Array<WLButton> = [
   {
     key: "decline",
@@ -116,7 +127,9 @@ const invitationActions: Array<WLButton> = [
     clickParams: [true],
   } as WLButton,
 ];
+// #endregion
 
+// #region Buttons for requests
 const requestsActions: Array<WLButton> = [
   {
     key: "cancel",
@@ -128,7 +141,14 @@ const requestsActions: Array<WLButton> = [
     buttonClick: cancelRequest,
   },
 ];
+// #endregion
 
+// #region Getter for the correct buttons
+/**
+ * Gets the correct buttons for the card
+ *
+ * @returns { Array<WLButton> } Array of buttons to add to card
+ */
 const groupActions: Function = (): Array<WLButton> | undefined => {
   switch (props.status) {
     case WLGroupMembershipStatus.INVITED:
@@ -139,6 +159,7 @@ const groupActions: Function = (): Array<WLButton> | undefined => {
       return;
   }
 };
+// #region
 </script>
 
 <style lang="scss">

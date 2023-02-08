@@ -24,10 +24,12 @@ const props = defineProps<{
   comment?: string;
 }>();
 
+// #region Item details logic (state & toggler)
 const showDetails = ref<boolean>(false);
 const toggleShowDetails = (): void => {
   showDetails.value = !showDetails.value;
 };
+// #endregion
 </script>
 
 <style lang="scss">
